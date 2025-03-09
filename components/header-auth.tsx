@@ -1,9 +1,11 @@
-import { signOutAction } from "@/app/actions";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import Link from "next/link";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { createClient } from "@/utils/supabase/server";
+import { getProfileById } from "@/app/(main)/profile/profile-actions";
+import Profile from "@/lib/types/profile.types";
+import AvatarDropDown from "./avatar-drop-down";
 
 export default async function AuthButton() {
   const supabase = await createClient();
@@ -48,16 +50,13 @@ export default async function AuthButton() {
       </>
     );
   }
-  return user ? (
-    <div className="flex items-center gap-4">
-      Hey, {user.email}!
-      <form action={signOutAction}>
-        <Button type="submit" variant={"outline"}>
-          Sign out
-        </Button>
-      </form>
-    </div>
-  ) : (
+
+  if (user) {
+    const profile: Profile = await getProfileById(user.id);
+    return (
+      <AvatarDropDown avatarImage={profile.avatar} avatarImageFallback="U" />
+    );
+  } else {
     <div className="flex gap-2">
       <Button asChild size="sm" variant={"outline"}>
         <Link href="/sign-in">Sign in</Link>
@@ -65,6 +64,6 @@ export default async function AuthButton() {
       <Button asChild size="sm" variant={"default"}>
         <Link href="/sign-up">Sign up</Link>
       </Button>
-    </div>
-  );
+    </div>;
+  }
 }
