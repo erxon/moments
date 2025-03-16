@@ -5,6 +5,12 @@ interface Profile {
   last_name?: string;
   avatar?: string;
   about?: string;
+  social?: null | {
+    id?: string;
+    facebook?: string;
+    twitter?: string;
+    instagram?: string;
+  };
   created_at?: string;
   updated_at?: string;
 }

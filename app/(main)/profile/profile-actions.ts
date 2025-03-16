@@ -3,9 +3,10 @@
 import { createClient } from "@/utils/supabase/server";
 import { encodedRedirect } from "@/utils/utils";
 import { redirect } from "next/navigation";
-import { imageUpload } from "@/lib/image_upload.utils";
+import { imageUpload } from "@/lib/cloudinary.utils";
 import { v2 as cloudinary } from "cloudinary";
 import Profile from "@/lib/types/profile.types";
+import Socials from "@/lib/types/socials.types";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -23,6 +24,21 @@ export async function getProfileById(id: string) {
   }
 
   return data[0] as Profile;
+}
+
+export async function getSocialsById(id: string) {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("socials")
+    .select()
+    .eq("user_id", id);
+
+  if (error) {
+    return encodedRedirect("error", "/protected", error.message);
+  }
+
+  return data[0] as Socials;
 }
 
 export async function createProfile(formData: FormData) {

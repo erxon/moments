@@ -41,3 +41,15 @@ export async function imageUpload(file: File) {
     throw new Error("Something went wrong");
   }
 }
+
+export async function imageDelete(url: string) {
+  try {
+    const splitUrl = url.split("/");
+    const imageName = splitUrl[splitUrl.length - 1];
+    const publicId = imageName.split(".")[0];
+
+    await cloudinary.uploader.destroy(publicId);
+  } catch (error) {
+    throw new Error("Something went wrong");
+  }
+}

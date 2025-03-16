@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { getProfileById } from "../profile-actions";
+import { getProfileById, getSocialsById } from "../profile-actions";
+import BasicProfileInfo from "@/app/(main)/profile/forms/basic-profile-info";
 
 export default async function Page() {
   const supabase = await createClient();
@@ -14,13 +15,17 @@ export default async function Page() {
   }
 
   const profile = await getProfileById(user.id);
-  if (profile) {
-    return redirect("/profile/new");
+  const socials = await getSocialsById(user.id);
+
+  if (!profile) {
+    return redirect("/protected");
   }
 
   return (
     <>
-      <div>New </div>
+      <div className="p-3">
+        <BasicProfileInfo profile={profile} socials={socials} />
+      </div>
     </>
   );
 }

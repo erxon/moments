@@ -28,7 +28,7 @@ export default async function Layout({
   return (
     <SidebarProvider>
       <SideNavBar />
-      <main className="min-h-screen w-full p-10">{children}</main>
+      <main className="min-h-screen w-full py-5">{children}</main>
     </SidebarProvider>
   );
 }
