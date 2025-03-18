@@ -1,15 +1,19 @@
+import { getProfileById } from "@/app/(main)/profile/profile-actions";
 import { createClient } from "@/utils/supabase/server";
 
-/**
- * @description
- * Updates the profile of the currently authenticated user.
- *
- * @param {Request} request
- * @returns {Response}
- * @throws {Response} with status 400 if the request body is missing
- *                     required fields (first_name, last_name)
- * @throws {Response} with status 400 if the supabase update operation fails
- */
+async function authenticate() {
+  const supabase = await createClient();
+
+  try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    return user;
+  } catch (error) {
+    return null;
+  }
+}
 
 export async function POST(request: Request) {
   const body = await request.json();
@@ -43,4 +47,20 @@ export async function POST(request: Request) {
   return new Response("Profile updated successfully", {
     status: 200,
   });
+}
+
+export async function GET() {
+  try {
+    const user = await authenticate();
+    if (user) {
+      const profile = await getProfileById(user?.id);
+      return new Response(JSON.stringify(profile), { status: 200 });
+    } else {
+      return new Response("Unauthorized", { status: 401 });
+    }
+  } catch (error) {
+    return new Response("Something went wrong. Please try again later.", {
+      status: 400,
+    });
+  }
 }

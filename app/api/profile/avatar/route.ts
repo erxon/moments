@@ -1,4 +1,4 @@
-import { imageUpload, imageDelete } from "@/lib/cloudinary.utils";
+import { imageUpload, imageDelete } from "@/lib/cloudinary.util";
 import { v2 as cloudinary } from "cloudinary";
 import { createClient } from "@/utils/supabase/server";
 import { getProfileById } from "@/app/(main)/profile/profile-actions";

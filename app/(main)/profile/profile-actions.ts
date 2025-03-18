@@ -3,7 +3,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { encodedRedirect } from "@/utils/utils";
 import { redirect } from "next/navigation";
-import { imageUpload } from "@/lib/cloudinary.utils";
+import { imageUpload } from "@/lib/cloudinary.util";
 import { v2 as cloudinary } from "cloudinary";
 import Profile from "@/lib/types/profile.types";
 import Socials from "@/lib/types/socials.types";

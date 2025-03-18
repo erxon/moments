@@ -22,16 +22,6 @@ export default function Navigation() {
           <User className="w-4 h-4 mr-2" />
           <p>Profile</p>
         </Link>
-        <Link
-          className={clsx(
-            "w-full p-2 transition hover:bg-blue-300 rounded-sm mb-1 flex text-sm",
-            pathname === "/profile/update/password" && "bg-blue-300"
-          )}
-          href="/profile/update/password"
-        >
-          <KeyRound className="w-4 h-4 mr-2" />
-          <p>Password</p>
-        </Link>
       </div>
     </div>
   );

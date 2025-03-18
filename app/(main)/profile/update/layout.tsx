@@ -7,7 +7,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="lg:col-span-3">
           <Navigation />
         </div>
-        <main className="lg:col-span-9">{children}</main>
+        <main className="lg:col-span-9 p-3">{children}</main>
       </div>
     </div>
   );

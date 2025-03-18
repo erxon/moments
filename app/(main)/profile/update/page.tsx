@@ -21,11 +21,5 @@ export default async function Page() {
     return redirect("/protected");
   }
 
-  return (
-    <>
-      <div className="p-3">
-        <BasicProfileInfo profile={profile} socials={socials} />
-      </div>
-    </>
-  );
+  return <BasicProfileInfo profile={profile} socials={socials} />;
 }

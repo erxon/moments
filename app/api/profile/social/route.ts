@@ -1,3 +1,4 @@
+import { authenticate } from "@/lib/auth.util";
 import Profile from "@/lib/types/profile.types";
 import { createClient } from "@/utils/supabase/server";
 
@@ -44,5 +45,31 @@ export async function POST(request: Request) {
     }
 
     return new Response("Socials were updated successfully", { status: 200 });
+  }
+}
+
+export async function GET(request: Request) {
+  try {
+    const user = await authenticate();
+    if (user) {
+      const supabase = await createClient();
+
+      const { data, error } = await supabase
+        .from("socials")
+        .select("*", { count: "exact" })
+        .eq("user_id", user.id);
+
+      if (error) {
+        return new Response(error.message, { status: 400 });
+      }
+      if (data.length > 0) {
+        return new Response(JSON.stringify(data[0]), { status: 200 });
+      }
+      return new Response("No socials found", { status: 200 });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      return new Response(error.message, { status: 400 });
+    }
   }
 }
