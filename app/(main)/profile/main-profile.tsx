@@ -5,7 +5,7 @@ import useSWR from "swr";
 import Profile from "@/lib/types/profile.types";
 import Image from "next/image";
 import Socials from "./socials";
-import Follows from "./follows";
+import Follows from "./components/follows";
 import {
   Card,
   CardContent,
@@ -20,6 +20,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { PencilIcon } from "lucide-react";
+import { Toaster } from "sonner";
 
 export default function MainProfile() {
   const { data, error, isLoading } = useSWR("/api/profile", fetcher);
@@ -95,6 +96,7 @@ export default function MainProfile() {
           <Follows />
         </div>
       </div>
+      <Toaster richColors />
     </div>
   );
 }

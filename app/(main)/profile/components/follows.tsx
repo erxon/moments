@@ -16,9 +16,34 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ReactEventHandler, useState } from "react";
+import axios from "axios";
+import { toast } from "sonner";
+
+interface FollowingProps {
+  following: {
+    id?: string;
+    first_name?: string;
+    middle_name?: string;
+    last_name?: string;
+  };
+}
+
+interface FollowerProps {
+  follower: {
+    id?: string;
+    first_name?: string;
+    middle_name?: string;
+    last_name?: string;
+    avatar?: string;
+  };
+}
 
 export default function Follows() {
-  const { data, error, isLoading } = useSWR("/api/profile/follows", fetcher);
+  const { data, error, isLoading } = useSWR("/api/profile/follows", fetcher, {
+    refreshInterval: 1000,
+  });
+
   if (error) return <div>failed to load</div>;
   if (isLoading)
     return (
@@ -54,36 +79,73 @@ export default function Follows() {
   );
 }
 
-interface FollowingProps {
-  following: {
-    id?: string;
-    first_name?: string;
-    middle_name?: string;
-    last_name?: string;
-  };
-}
-
-interface FollowerProps {
-  follower: {
-    id?: string;
-    first_name?: string;
-    middle_name?: string;
-    last_name?: string;
-    avatar?: string;
-  };
-}
-
 function Following({ following }: { following: FollowingProps[] }) {
+  const [followingList, setFollowingList] = useState(following);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  async function handleUnfollow(id?: string) {
+    try {
+      setIsLoading(true);
+
+      const result = await axios.delete("/api/profile/follows", {
+        data: { following: id },
+      });
+
+      if (result.status === 200) {
+        setFollowingList(
+          followingList.filter((item) => item.following.id !== id)
+        );
+        toast.success(result.data, {
+          action: {
+            label: "Close",
+            onClick: () => {
+              toast.dismiss();
+            },
+          },
+          duration: 5000,
+        });
+      } else {
+        toast.error(result.data, {
+          action: {
+            label: "Close",
+            onClick: () => {
+              toast.dismiss();
+            },
+          },
+          description: "Please try again",
+          duration: 5000,
+        });
+      }
+    } catch (error) {
+      toast.error("Something went wrong", {
+        action: {
+          label: "Close",
+          onClick: () => {
+            toast.dismiss();
+          },
+        },
+        description: "Please try again",
+        duration: 5000,
+      });
+    }
+
+    setIsLoading(false);
+  }
   return (
     <>
-      {following.length > 0 ? (
+      {followingList.length > 0 ? (
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Following</CardTitle>
           </CardHeader>
           <CardContent>
-            {following.map((item) => (
-              <DisplayUser user={item.following} type="following" />
+            {followingList.map((item) => (
+              <DisplayUser
+                key={item.following.id}
+                user={item.following}
+                type="following"
+                unfollow={handleUnfollow}
+                isLoading={isLoading}
+              />
             ))}
           </CardContent>
         </Card>
@@ -125,6 +187,8 @@ function Followers({ follower }: { follower: FollowerProps[] }) {
 function DisplayUser({
   user,
   type,
+  unfollow,
+  isLoading,
 }: {
   user: {
     id?: string;
@@ -134,6 +198,8 @@ function DisplayUser({
     avatar?: string;
   };
   type: string;
+  unfollow?: (id?: string) => {};
+  isLoading?: boolean;
 }) {
   return (
     <div className="flex items-center gap-3 outline outline-1 outline-neutral-300 p-2 rounded-md">
@@ -149,8 +215,15 @@ function DisplayUser({
         {user.last_name}
       </p>
       {type === "following" && (
-        <Button size="sm" variant="destructive">
-          Unfollow
+        <Button
+          onClick={() => {
+            unfollow && unfollow(user.id);
+          }}
+          disabled={isLoading}
+          size="sm"
+          variant="secondary"
+        >
+          {!isLoading ? "Unfollow" : "Unfollowing..."}
         </Button>
       )}
     </div>

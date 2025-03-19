@@ -1,12 +1,12 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "../../../../components/ui/button";
-import { Input } from "../../../../components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Profile from "@/lib/types/profile.types";
 import axios from "axios";
 import { toast, Toaster } from "sonner";
-import { Textarea } from "../../../../components/ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
