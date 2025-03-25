@@ -3,6 +3,7 @@ import { ThemeSwitcher } from "@/components/theme-switcher";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -34,15 +35,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <main className="min-h-screen">
-            <div className="w-full">
-              <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-                <div className="w-full flex justify-end items-center p-3 px-10 text-sm">
-                  <HeaderAuth />
-                  <ThemeSwitcher />
-                </div>
-              </nav>
-              <div>{children}</div>
-            </div>
+            <div>{children}</div>
           </main>
         </ThemeProvider>
       </body>
