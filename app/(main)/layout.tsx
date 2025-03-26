@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { getProfileById } from "./profile/profile-actions";
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import CurrentPath from "./current-path";
 
 export default async function Layout({
   children,
@@ -29,12 +30,15 @@ export default async function Layout({
   return (
     <SidebarProvider>
       <SideNavBar profile={profile} />
-      <main className="min-h-screen w-full">
+      <main className="min-h-screen w-full mx-10">
         <div className="w-full flex justify-between items-center p-3 px-4 text-sm">
-          <SidebarTrigger />
+          <div className="flex items-center">
+            <SidebarTrigger />
+            {/* <CurrentPath /> */}
+          </div>
           <ThemeSwitcher />
         </div>
-        {children}
+        <div>{children}</div>
       </main>
     </SidebarProvider>
   );

@@ -65,7 +65,7 @@ export async function GET(request: Request) {
       if (data.length > 0) {
         return new Response(JSON.stringify(data[0]), { status: 200 });
       }
-      return new Response("No socials found", { status: 200 });
+      return new Response(JSON.stringify({}), { status: 400 });
     }
   } catch (error) {
     if (error instanceof Error) {

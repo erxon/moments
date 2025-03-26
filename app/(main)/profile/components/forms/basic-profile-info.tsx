@@ -76,7 +76,7 @@ export default function BasicProfileInfo({
     };
 
     try {
-      const result = await axios.post("/api/profile", data);
+      const result = await axios.put("/api/profile", data);
 
       if (result.status === 200) {
         toast.success(result.data, {

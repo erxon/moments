@@ -2,22 +2,11 @@
 
 import Image from "next/image";
 import ProfilePicturePlaceholder from "../lib/assets/profile-picture-placeholder.png";
-import { ImageUp } from "lucide-react";
+import { UserIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 
-export default function ImageInput({ name }: { name: string }) {
+export default function ImageInput() {
   const [file, setFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null | undefined>(null);
-
-  useEffect(() => {
-    if (!file) {
-      setPreview(undefined);
-      return;
-    }
-    const objectUrl = URL.createObjectURL(file);
-    setPreview(objectUrl);
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [file]);
 
   function onSelectFile(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.files) {
@@ -26,26 +15,31 @@ export default function ImageInput({ name }: { name: string }) {
   }
 
   return (
-    <div>
-      <div>
-        <Image
-          src={file ? URL.createObjectURL(file) : ProfilePicturePlaceholder}
-          width={1200}
-          height={1200}
-          className="w-[120px] h-[120px] object-cover rounded-full"
-          alt="Profile Picture Placeholder"
-        />
+    <div className="flex flex-col">
+      <div className="w-[120px] h-[120px] mb-4 flex items-center justify-center">
+        {file ? (
+          <Image
+            src={file ? URL.createObjectURL(file) : ProfilePicturePlaceholder}
+            width={1200}
+            height={1200}
+            className="w-[120px] h-[120px] object-cover rounded-full"
+            alt="Profile Picture Placeholder"
+          />
+        ) : (
+          <div className="outline outline-1 outline-neutral-500 w-[120px] h-[120px] flex items-center justify-center rounded-full">
+            <UserIcon />
+          </div>
+        )}
       </div>
       <label
-        className="flex items-center text-primary"
+        className="text-center text-primary text-sm font-semibold"
         role="button"
         htmlFor="file"
       >
-        <ImageUp className="mr-2" /> Add a photo
+        Add a photo
       </label>
       <input
         onChange={onSelectFile}
-        name={name}
         id="file"
         type="file"
         accept="image/jpg, image/jpeg, image/png"

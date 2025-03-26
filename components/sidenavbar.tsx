@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ChevronUp,
   House,
@@ -34,6 +36,7 @@ import {
 } from "./ui/dropdown-menu";
 import Link from "next/link";
 import { signOutAction } from "@/app/actions";
+import { useRouter } from "next/navigation";
 
 const items = [
   {
@@ -101,6 +104,8 @@ function ProfileOverview({
   profile: Profile;
   className?: string;
 }) {
+  const router = useRouter();
+
   return (
     <SidebarFooter>
       <SidebarMenu>
@@ -131,9 +136,9 @@ function ProfileOverview({
               side="top"
               className="w-[--radix-popper-anchor-width]"
             >
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/profile")}>
                 <UserIcon className="" />
-                <Link href="/profile">Profile</Link>
+                Profile
               </DropdownMenuItem>
               <DropdownMenuItem onClick={signOutAction}>
                 <LogOut />
