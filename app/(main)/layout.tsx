@@ -30,9 +30,9 @@ export default async function Layout({
   return (
     <SidebarProvider>
       <SideNavBar profile={profile} />
-      <main className="min-h-screen w-full mx-10">
-        <div className="w-full flex justify-between items-center p-3 px-4 text-sm">
-          <div className="flex items-center">
+      <main className="min-h-screen w-full mx-2 lg:mx-6">
+        <div className="w-full flex justify-between items-center py-3 text-sm">
+          <div className="flex items-center gap-2">
             <SidebarTrigger />
             {/* <CurrentPath /> */}
           </div>

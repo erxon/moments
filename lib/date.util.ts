@@ -20,3 +20,10 @@ export function localeDateStringFormatter(dateString: string) {
 
   return newDateString;
 }
+
+export function localeTimeStringFormatter(timeString: string) {
+  const [hours, minutes, seconds] = timeString.split(":");
+  const ampm = seconds.split(" ");
+
+  return `${hours}:${minutes} ${ampm[1]}`;
+}

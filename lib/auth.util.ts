@@ -1,3 +1,4 @@
+"use server";
 import { createClient } from "@/utils/supabase/server";
 
 export async function authenticate() {
@@ -7,7 +8,7 @@ export async function authenticate() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    throw new Error("Unauthorized");
+    throw new Error("Unauthenticated");
   }
 
   return user;

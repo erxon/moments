@@ -3,10 +3,10 @@ import { createClient } from "@/utils/supabase/server";
 
 export async function GET(
   request: Request,
-  { params }: { params: { gallery_id: string } }
+  { params }: { params: Promise<{ gallery_id: string }> }
 ) {
   try {
-    const { gallery_id } = params;
+    const { gallery_id } = await params;
 
     const user = await authenticate();
 
