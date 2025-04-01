@@ -34,10 +34,10 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { gallery_id: string } }
+  { params }: { params: Promise<{ gallery_id: string }> }
 ) {
   try {
-    const { gallery_id } = params;
+    const { gallery_id } = await params;
     const body = await request.json();
     const { title, description, visibility } = body;
 
@@ -68,10 +68,10 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { gallery_id: string } }
+  { params }: { params: Promise<{ gallery_id: string }> }
 ) {
   try {
-    const { gallery_id } = params;
+    const { gallery_id } = await params;
 
     const user = await authenticate();
 
