@@ -9,6 +9,40 @@ export async function imageToBuffer(file: File) {
   return buffer;
 }
 
+export async function imageToBase64(file: File) {
+  const buffer = await imageToBuffer(file);
+  return Buffer.from(buffer).toString("base64");
+}
+
+export async function imageUploadToCloudinary(file: File, folder: string) {
+  try {
+    const buffer = await imageToBuffer(file);
+    const uploadImageURL: string | undefined = await new Promise(
+      (resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream(
+            {
+              folder: "image-gallery-app",
+              tags: ["image-gallery"],
+            },
+            function (error, result) {
+              if (error) {
+                reject(error);
+                return;
+              }
+              resolve(result?.url);
+            }
+          )
+          .end(buffer);
+      }
+    );
+
+    return uploadImageURL;
+  } catch (error) {
+    throw new Error("Something went wrong");
+  }
+}
+
 export async function imageUpload(file: File) {
   const { resources: avatar } = await cloudinary.api.resources_by_tag(
     "photo-gallery-users",

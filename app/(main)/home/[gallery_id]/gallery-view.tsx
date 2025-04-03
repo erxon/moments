@@ -9,11 +9,12 @@ import {
 } from "@/lib/date.util";
 import { Skeleton } from "@/components/ui/skeleton";
 import captilizeFirstLetter from "@/lib/string.util";
-import { Globe } from "lucide-react";
+import { Globe, Image } from "lucide-react";
 import { Lock } from "lucide-react";
 import { UsersRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Images from "./images";
+import UploadImageButton from "./upload-image-button";
 
 export default function GalleryView({ gallery_id }: { gallery_id: string }) {
   const { data, error, isLoading } = useSWR(
@@ -44,9 +45,9 @@ export default function GalleryView({ gallery_id }: { gallery_id: string }) {
       <div className="mb-8">
         <div className="mb-4 flex">
           <div className="grow">
-            <div className="flex items-start">
+            <div className="flex">
               <h1 className="text-lg font-medium grow">{gallery.title}</h1>
-              <Button size="sm">Upload Image</Button>
+              <UploadImageButton gallery_id={gallery_id} />
             </div>
 
             <p className="text-sm">
@@ -61,7 +62,7 @@ export default function GalleryView({ gallery_id }: { gallery_id: string }) {
         </div>
         <p className="mb-2">{gallery.description}</p>
       </div>
-      <Images />
+      <Images gallery_id={gallery_id} />
     </>
   );
 }

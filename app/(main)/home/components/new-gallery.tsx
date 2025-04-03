@@ -41,6 +41,7 @@ import axios from "axios";
 import triggerSuccessToast from "@/components/toast/trigger-success-toast";
 import triggerErrorToast from "@/components/toast/trigger-error-toast";
 import { useSWRConfig } from "swr";
+import visibilityDescription from "./visibility-description";
 
 const formSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
@@ -195,14 +196,4 @@ function DialogForm({
       </Form>
     </DialogContent>
   );
-}
-
-function visibilityDescription(value: string) {
-  if (value === "public") {
-    return "Everyone will see your gallery";
-  } else if (value === "private") {
-    return "This will be a private gallery. Only you can see this.";
-  } else if (value === "followers") {
-    return "Only your followers can see this gallery.";
-  }
 }

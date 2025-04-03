@@ -1,3 +1,4 @@
+import { Toaster } from "sonner";
 import GalleryView from "./gallery-view";
 
 export default async function Page({
@@ -10,6 +11,7 @@ export default async function Page({
   return (
     <>
       <GalleryView gallery_id={gallery_id} />
+      <Toaster />
     </>
   );
 }
