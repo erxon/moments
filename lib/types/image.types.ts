@@ -6,7 +6,7 @@ interface ImageType {
   description: string;
   label: string;
   path: string;
-  visibility: string;
+  visibility: "public" | "private" | "followers";
   created_at: string;
   updated_at: string;
 }
