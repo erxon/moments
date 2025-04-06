@@ -45,6 +45,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
+  DialogFooter,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import axios from "axios";
@@ -72,36 +74,33 @@ const formSchema = z.object({
 });
 
 function LoadImages({ gallery_id }: { gallery_id: string }) {
-  const [openEditDialogForm, setOpenEditDialogForm] = useState<boolean>(false);
+  const [isEditDialogFormOpen, setIsEditDialogFormOpen] = useState(false);
   const [imageToEdit, setImageToEdit] = useState<ImageType | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
+  const [imageToDelete, setImageToDelete] = useState<ImageType | null>(null);
+
   const { data, error, isLoading } = useSWR(
     `/api/gallery/${gallery_id}/images`,
     fetcher
   );
 
-  if (error)
+  if (error) return <NoImages />;
+  if (isLoading) {
     return (
-      <div>
-        <NoImages />
+      <div className="columns-1 md:columns-3 gap-4">
+        {[...Array(3)].map((_, i) => (
+          <Skeleton key={i} className="h-[300px] max-w-full object-full" />
+        ))}
       </div>
     );
-  if (isLoading)
-    return (
-      <div>
-        <div className="columns-1 md:columns-3 gap-4">
-          <Skeleton className="h-[300px] max-w-full object-full" />
-          <Skeleton className="h-[300px] max-w-full object-full" />
-          <Skeleton className="h-[300px] max-w-full object-full" />
-        </div>
-      </div>
-    );
+  }
 
   const images = data as ImageType[];
 
   return (
     <>
       <div className="columns-1 md:columns-3 gap-4">
-        {data.map((image: ImageType) => {
+        {images.map((image) => {
           const createdAt = localeDateStringFormatter(
             new Date(image.created_at!).toLocaleDateString()
           );
@@ -132,12 +131,17 @@ function LoadImages({ gallery_id }: { gallery_id: string }) {
                     <DropdownMenuItem
                       onClick={() => {
                         setImageToEdit(image);
-                        setOpenEditDialogForm(true);
+                        setIsEditDialogFormOpen(true);
                       }}
                     >
                       <Pencil className="w-4 h-4" /> Edit
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setImageToDelete(image);
+                        setIsDeleteDialogOpen(true);
+                      }}
+                    >
                       <Trash />
                       Delete
                     </DropdownMenuItem>
@@ -163,12 +167,19 @@ function LoadImages({ gallery_id }: { gallery_id: string }) {
             </div>
           );
         })}
-        {openEditDialogForm && (
+        {isEditDialogFormOpen && (
           <EditDialogForm
-            open={openEditDialogForm}
-            setOpenEditDialogForm={setOpenEditDialogForm}
+            open={isEditDialogFormOpen}
+            setOpenEditDialogForm={setIsEditDialogFormOpen}
             image={imageToEdit!}
             gallery_id={gallery_id}
+          />
+        )}
+        {isDeleteDialogOpen && (
+          <DeleteDialog
+            open={isDeleteDialogOpen}
+            setOpenDeleteDialog={setIsDeleteDialogOpen}
+            image={imageToDelete!}
           />
         )}
       </div>
@@ -176,12 +187,8 @@ function LoadImages({ gallery_id }: { gallery_id: string }) {
   );
 }
 
-export default function Images({ gallery_id }: { gallery_id: string }) {
-  return (
-    <>
-      <LoadImages gallery_id={gallery_id} />
-    </>
-  );
+export default function GalleryImages({ gallery_id }: { gallery_id: string }) {
+  return <LoadImages gallery_id={gallery_id} />;
 }
 
 function EditDialogForm({
@@ -295,6 +302,62 @@ function EditDialogForm({
         </DialogContent>
       </Dialog>
     </>
+  );
+}
+
+function DeleteDialog({
+  open,
+  setOpenDeleteDialog,
+  image,
+}: {
+  setOpenDeleteDialog: React.Dispatch<React.SetStateAction<boolean>>;
+  open: boolean;
+  image: ImageType;
+}) {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const handleDelete = async () => {
+    setIsLoading(true);
+    try {
+      const result = await axios.delete(`/api/image/${image.id}`);
+      if (result.status === 200) {
+        mutate(`/api/gallery/${image.gallery_id}/images`);
+        setOpenDeleteDialog(false);
+        triggerSuccessToast(result.data);
+      } else {
+        triggerErrorToast("Error deleting image");
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        triggerErrorToast(error.message);
+      }
+    }
+    setIsLoading(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={() => setOpenDeleteDialog(false)}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Delete image</DialogTitle>
+          <DialogDescription>
+            Are you sure you want to delete this image? This action cannot be
+            undone.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter className="mr-auto">
+          <DialogClose asChild>
+            <Button variant="secondary">Close</Button>
+          </DialogClose>
+          <Button
+            onClick={handleDelete}
+            variant="destructive"
+            disabled={isLoading}
+          >
+            {!isLoading ? "Delete" : "Deleting..."}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
