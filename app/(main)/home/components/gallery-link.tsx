@@ -1,8 +1,11 @@
+"use client";
+
 import Link from "next/link";
-import { Images } from "lucide-react";
+import { Images, Pencil } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Gallery from "@/lib/types/gallery.types";
 import { SetStateAction } from "react";
+import { Button } from "@/components/ui/button";
 
 export default function GalleryLink({
   gallery,
@@ -20,7 +23,7 @@ export default function GalleryLink({
     >
       <Images strokeWidth={1} className="text-neutral-500 mr-2 w-4 h-4" />
       <p className="grow text-sm">{gallery.title}</p>
-      <Badge variant="secondary">0</Badge>
+      <Badge variant="secondary">{gallery.total_images}</Badge>
     </Link>
   );
 }

@@ -37,7 +37,8 @@ export default function GalleryView({ gallery_id }: { gallery_id: string }) {
   const gallery: Gallery = data[0];
 
   const createdAt = new Date(gallery.created_at!).toLocaleDateString();
-  const timeCreated = new Date(gallery.created_at!).toLocaleTimeString();
+  const updatedAt = new Date(gallery.updated_at!).toLocaleDateString();
+  const timeUpdated = new Date(gallery.updated_at!).toLocaleTimeString();
   const visibility = captilizeFirstLetter(gallery.visibility);
 
   return (
@@ -45,15 +46,19 @@ export default function GalleryView({ gallery_id }: { gallery_id: string }) {
       <div className="mb-8">
         <div className="mb-4 flex">
           <div className="grow">
-            <div className="flex">
-              <h1 className="text-lg font-medium grow">{gallery.title}</h1>
+            <div className="flex mb-2">
+              <h1 className="text-3xl font-medium grow">{gallery.title}</h1>
               <UploadImageButton gallery_id={gallery_id} />
             </div>
 
-            <p className="text-sm">
-              {localeDateStringFormatter(createdAt)}{" "}
-              {localeTimeStringFormatter(timeCreated)}
+            <p className="text-sm text-neutral-500">
+              Created at {localeDateStringFormatter(createdAt)}{" "}
             </p>
+            <p className="text-sm mb-1 text-neutral-500">
+              Last updated {localeDateStringFormatter(updatedAt)}{" "}
+              {localeTimeStringFormatter(timeUpdated)}
+            </p>
+
             <div className="flex items-center gap-1 text-sm">
               <VisibilityIcon visibility={gallery.visibility} />
               <p>{visibility}</p>

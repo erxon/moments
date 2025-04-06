@@ -43,11 +43,39 @@ export async function DELETE(
     const supabase = await createClient();
     const { image_id } = await params;
 
-    const { error } = await supabase
+    const { data: deletedImage, error } = await supabase
       .from("image")
       .delete()
       .eq("id", image_id)
-      .eq("user_id", user.id);
+      .eq("user_id", user.id)
+      .select();
+
+    if (deletedImage && deletedImage.length > 0) {
+      const deletedImageGalleryId = deletedImage[0].gallery_id;
+
+      const { data: numberOfImages, error: getImagesError } = await supabase
+        .from("image")
+        .select()
+        .eq("gallery_id", deletedImageGalleryId)
+        .eq("user_id", user.id);
+
+      const total_images = numberOfImages?.length || 0;
+
+      const { error: updatedGalleryError } = await supabase
+        .from("gallery")
+        .update({
+          total_images: total_images,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("user_id", user.id)
+        .eq("id", deletedImageGalleryId);
+
+      if (updatedGalleryError || getImagesError) {
+        console.error("Error getting images:", getImagesError);
+        console.error("Error updating gallery:", updatedGalleryError);
+        throw new Error("Something went wrong while deleting the image.");
+      }
+    }
 
     if (error) {
       throw new Error(error.message);

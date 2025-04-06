@@ -31,8 +31,27 @@ export async function POST(request: Request) {
       ...data,
     });
 
-    if (error) {
-      throw new Error(error.message);
+    const { data: images, error: getImagesError } = await supabase
+      .from("image")
+      .select("*")
+      .eq("gallery_id", data.gallery_id)
+      .eq("user_id", user.id);
+
+    const imagesCount = images?.length || 0;
+
+    const { error: updateGalleryError } = await supabase
+      .from("gallery")
+      .update({
+        total_images: imagesCount,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", data.gallery_id);
+
+    if (error || getImagesError || updateGalleryError) {
+      console.log("Error inserting image:", error);
+      console.log("Error getting images:", getImagesError);
+      console.log("Error updating gallery:", updateGalleryError);
+      throw new Error("Something went wrong while uploading the image.");
     }
 
     return new Response("Image uploaded successfully", {

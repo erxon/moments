@@ -37,7 +37,11 @@ export async function GET(request: Request) {
 
     const supabase = await createClient();
 
-    const { data, error } = await supabase.from("gallery").select();
+    const { data, error } = await supabase
+      .from("gallery")
+      .select()
+      .order("updated_at")
+      .eq("user_id", user.id);
 
     if (error) {
       console.log(error);

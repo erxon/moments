@@ -6,4 +6,5 @@ export default interface Gallery {
   visibility: string;
   created_at?: string;
   updated_at?: string;
+  total_images?: number;
 }
