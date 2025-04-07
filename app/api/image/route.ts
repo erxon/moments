@@ -45,7 +45,8 @@ export async function POST(request: Request) {
         total_images: imagesCount,
         updated_at: new Date().toISOString(),
       })
-      .eq("id", data.gallery_id);
+      .eq("id", data.gallery_id)
+      .eq("user_id", user.id);
 
     if (error || getImagesError || updateGalleryError) {
       console.log("Error inserting image:", error);
