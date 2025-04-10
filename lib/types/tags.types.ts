@@ -7,8 +7,7 @@ interface Tag {
 interface ImageTags {
   user_id: string;
   image_id: string;
-  tag_id: string;
-  tag_name: string;
+  tag_id: Tag;
   created_at: string;
 }
 

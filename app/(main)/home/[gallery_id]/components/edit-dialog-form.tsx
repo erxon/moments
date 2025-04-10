@@ -37,7 +37,7 @@ import {
   Description,
   Label as LabelField,
   Title,
-} from "../components/form-fields";
+} from "../../components/form-fields";
 
 const formSchema = z.object({
   title: z.string().min(1, {

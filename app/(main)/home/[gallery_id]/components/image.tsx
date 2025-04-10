@@ -18,6 +18,8 @@ import { Pencil } from "lucide-react";
 import { Trash } from "lucide-react";
 import DeleteDialog from "./delete-dialog";
 import EditDialogForm from "./edit-dialog-form";
+import Tags from "./tags";
+import AddTag from "./add-tag";
 
 export default function ImageComponent({
   image,
@@ -30,6 +32,8 @@ export default function ImageComponent({
   const [imageToEdit, setImageToEdit] = useState<ImageType | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
   const [imageToDelete, setImageToDelete] = useState<ImageType | null>(null);
+  const [addTagDialogOpen, setAddTagDialogOpen] = useState<boolean>(false);
+  const [imageToAddTag, setImageToAddTag] = useState<ImageType | null>(null);
 
   const createdAt = localeDateStringFormatter(
     new Date(image.created_at!).toLocaleDateString()
@@ -72,6 +76,15 @@ export default function ImageComponent({
               <Trash />
               Delete
             </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                setImageToAddTag(image);
+                setAddTagDialogOpen(true);
+              }}
+            >
+              <TagIcon className="w-4 h-4" />
+              Tags
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -87,9 +100,8 @@ export default function ImageComponent({
           <TagIcon className="w-4 h-4" />
           <p className="text-sm">{image.label}</p>
         </div>
-        <div className="font-medium p-1 px-2 rounded-full bg-blue-500 text-white text-xs w-fit">
-          Picture Tag
-        </div>
+        {/* Tags */}
+        <Tags image_id={image.id} />
       </div>
 
       {isEditDialogFormOpen && (
@@ -105,6 +117,13 @@ export default function ImageComponent({
           open={isDeleteDialogOpen}
           setOpenDeleteDialog={setIsDeleteDialogOpen}
           image={imageToDelete!}
+        />
+      )}
+      {addTagDialogOpen && (
+        <AddTag
+          open={addTagDialogOpen}
+          setAddTagDialogOpen={setAddTagDialogOpen}
+          image={imageToAddTag!}
         />
       )}
     </>

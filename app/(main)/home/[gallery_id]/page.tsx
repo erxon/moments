@@ -1,5 +1,5 @@
 import { Toaster } from "sonner";
-import GalleryView from "./gallery-view";
+import GalleryView from "./components/gallery-view";
 
 export default async function Page({
   params,

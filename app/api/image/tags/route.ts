@@ -4,9 +4,15 @@ import { authenticate } from "@/lib/auth.util";
 export async function GET(request: Request) {
   try {
     const user = await authenticate();
+    const { searchParams } = new URL(request.url);
+    const search = searchParams.get("search");
     const supabase = await createClient();
 
-    const { data, error } = await supabase.from("tags").select();
+    const { data, error } = await supabase
+      .from("tags")
+      .select("*")
+      .like("name", `%${search}%`)
+      .limit(5);
 
     if (error) {
       throw new Error(error.message);
@@ -29,6 +35,18 @@ export async function POST(request: Request) {
     const supabase = await createClient();
 
     const { name } = await request.json();
+
+    const existingTag = await supabase
+      .from("tags")
+      .select("*")
+      .eq("name", name)
+      .single();
+
+    if (existingTag.data) {
+      return new Response("Tag already exists", {
+        status: 400,
+      });
+    }
 
     const { data, error } = await supabase
       .from("tags")

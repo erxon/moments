@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { GlobeIcon, Image, Lock, UsersRound } from "lucide-react";
+import { Image } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -10,17 +10,12 @@ import {
   DialogTrigger,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import visibilityDescription from "../components/visibility-description";
-import VisibilitySelection from "../components/visibility-selection";
+import VisibilitySelection from "../../components/visibility-selection";
 import React, { useRef, useState } from "react";
 import { Label } from "@/components/ui/label";
 import clsx from "clsx";
-import { get } from "http";
 import axios from "axios";
 import triggerSuccessToast from "@/components/toast/trigger-success-toast";
 import triggerErrorToast from "@/components/toast/trigger-error-toast";
