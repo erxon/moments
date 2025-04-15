@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import MainProfile from "./main-profile";
+import AuthenticatedUserProfile from "./components/authenticated-user-profile";
 
 export default async function Page() {
   const supabase = await createClient();
@@ -12,5 +12,5 @@ export default async function Page() {
     redirect("/sign-in");
   }
 
-  return <MainProfile />;
+  return <AuthenticatedUserProfile />;
 }

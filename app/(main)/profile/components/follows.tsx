@@ -1,231 +1,139 @@
 "use client";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import useSWR from "swr";
-import { fetcher } from "@/lib/swr.util";
-import Image from "next/image";
-import ProfilePicturePlaceholder from "@/lib/assets/profile-picture-placeholder.png";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ReactEventHandler, useState } from "react";
-import axios from "axios";
-import { toast } from "sonner";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { fetcher } from "@/lib/swr.util";
+import Profile from "@/lib/types/profile.types";
+import useSWR from "swr";
+import ProfilePicturePlaceholder from "@/lib/assets/profile-picture-placeholder.png";
+import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-interface FollowingProps {
-  following: {
-    id?: string;
-    first_name?: string;
-    middle_name?: string;
-    last_name?: string;
-  };
-}
-
-interface FollowerProps {
-  follower: {
-    id?: string;
-    first_name?: string;
-    middle_name?: string;
-    last_name?: string;
-    avatar?: string;
-  };
-}
-
-export default function Follows() {
-  const { data, error, isLoading } = useSWR("/api/profile/follows", fetcher, {
-    refreshInterval: 1000,
-  });
+export default function Follows({ user_id }: { user_id?: string }) {
+  const { data, error, isLoading } = useSWR(
+    `/api/profile/${user_id}/follows`,
+    fetcher
+  );
 
   if (error) return <div>failed to load</div>;
   if (isLoading)
     return (
-      <div className="flex flex-col gap-4">
-        <Skeleton className="w-full h-[50px]" />
-        <Skeleton className="w-full h-[200px]" />
-      </div>
+      <>
+        <div className="flex flex-col gap-2">
+          <Skeleton className="w-full h-[25px]" />
+          <Skeleton className="w-full h-[25px]" />
+          <Skeleton className="w-full h-[25px]" />
+        </div>
+      </>
     );
 
-  return (
-    <Tabs defaultValue="following">
-      <TabsList>
-        <TabsTrigger className="gap-2" value="following">
-          Following{" "}
-          {data.following.length > 0 && (
-            <Badge>{data.following.length}</Badge>
-          )}{" "}
-        </TabsTrigger>
-        <TabsTrigger value="followers">
-          Followers{" "}
-          {data.follower.length > 0 && (
-            <Badge>{data.follower.length}</Badge>
-          )}{" "}
-        </TabsTrigger>
-      </TabsList>
-      <TabsContent value="following">
-        <Following following={data.following} />
-      </TabsContent>
-      <TabsContent value="followers">
-        <Followers follower={data.follower} />
-      </TabsContent>
-    </Tabs>
-  );
-}
+  const { followers, following } = data;
 
-function Following({ following }: { following: FollowingProps[] }) {
-  const [followingList, setFollowingList] = useState(following);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  async function handleUnfollow(id?: string) {
-    try {
-      setIsLoading(true);
-
-      const result = await axios.delete("/api/profile/follows", {
-        data: { following: id },
-      });
-
-      if (result.status === 200) {
-        setFollowingList(
-          followingList.filter((item) => item.following.id !== id)
-        );
-        toast.success(result.data, {
-          action: {
-            label: "Close",
-            onClick: () => {
-              toast.dismiss();
-            },
-          },
-          duration: 5000,
-        });
-      } else {
-        toast.error(result.data, {
-          action: {
-            label: "Close",
-            onClick: () => {
-              toast.dismiss();
-            },
-          },
-          description: "Please try again",
-          duration: 5000,
-        });
-      }
-    } catch (error) {
-      toast.error("Something went wrong", {
-        action: {
-          label: "Close",
-          onClick: () => {
-            toast.dismiss();
-          },
-        },
-        description: "Please try again",
-        duration: 5000,
-      });
-    }
-
-    setIsLoading(false);
-  }
   return (
     <>
-      {followingList.length > 0 ? (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Following</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {followingList.map((item) => (
-              <DisplayUser
-                key={item.following.id}
-                user={item.following}
-                type="following"
-                unfollow={handleUnfollow}
-                isLoading={isLoading}
-              />
-            ))}
-          </CardContent>
-        </Card>
-      ) : (
-        <Card>
-          <CardHeader>
-            <CardDescription>No followers yet</CardDescription>
-          </CardHeader>
-        </Card>
-      )}
+      <Tabs defaultValue="followers">
+        <TabsList>
+          <TabsTrigger value="followers">Followers</TabsTrigger>
+          <TabsTrigger value="following">Following</TabsTrigger>
+        </TabsList>
+        <TabsContent value="followers">
+          <Followers followers={followers} />
+        </TabsContent>
+        <TabsContent value="following">
+          <Following following={following} />
+        </TabsContent>
+      </Tabs>
     </>
   );
 }
 
-function Followers({ follower }: { follower: FollowerProps[] }) {
+interface Follower {
+  follower: Profile;
+}
+
+interface Following {
+  following: Profile;
+}
+function Followers({ followers }: { followers: Follower[] }) {
   return (
     <>
-      {follower.length > 0 ? (
+      {" "}
+      {followers.length > 0 ? (
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Followers</CardTitle>
           </CardHeader>
-          <CardContent>
-            {follower.map((item) => (
-              <DisplayUser user={item.follower} type="following" />
+          <CardContent className="flex flex-col gap-2">
+            {followers.map((item: Follower) => (
+              <DisplayProfile profile={item.follower} />
             ))}
           </CardContent>
         </Card>
       ) : (
         <Card>
           <CardHeader>
-            <CardDescription>No followers yet</CardDescription>
+            <CardDescription>No data to display</CardDescription>
+          </CardHeader>
+        </Card>
+      )}{" "}
+    </>
+  );
+}
+
+function Following({ following }: { following: Following[] }) {
+  return (
+    <>
+      {following.length > 0 ? (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Following</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-2">
+            {following.map((item) => (
+              <DisplayProfile profile={item.following} />
+            ))}
+          </CardContent>
+        </Card>
+      ) : (
+        <Card>
+          <CardHeader>
+            <CardDescription>No data to display</CardDescription>
           </CardHeader>
         </Card>
       )}
     </>
   );
 }
-function DisplayUser({
-  user,
-  type,
-  unfollow,
-  isLoading,
-}: {
-  user: {
-    id?: string;
-    first_name?: string;
-    middle_name?: string;
-    last_name?: string;
-    avatar?: string;
-  };
-  type: string;
-  unfollow?: (id?: string) => {};
-  isLoading?: boolean;
-}) {
+
+function DisplayProfile({ profile }: { profile: Profile }) {
+  console.log(profile.email);
   return (
-    <div className="flex items-center gap-3 outline outline-1 outline-neutral-300 p-2 rounded-md">
-      <Image
-        src={user.avatar ? user.avatar : ProfilePicturePlaceholder}
-        alt="Profile picture"
-        width={1000}
-        height={1000}
-        className="w-[56px] h-[56px] rounded-full object-cover"
-      />
-      <p className="grow">
-        {user.first_name} {user.middle_name ? user.middle_name : ""}{" "}
-        {user.last_name}
-      </p>
-      {type === "following" && (
-        <Button
-          onClick={() => {
-            unfollow && unfollow(user.id);
-          }}
-          disabled={isLoading}
-          size="sm"
-          variant="secondary"
-        >
-          {!isLoading ? "Unfollow" : "Unfollowing..."}
-        </Button>
-      )}
-    </div>
+    <>
+      <div className="flex items-center gap-3 p-2 rounded-md">
+        <Avatar>
+          <AvatarFallback>
+            {profile.first_name
+              ?.charAt(0)
+              .concat(profile.last_name!.charAt(0))
+              .toUpperCase()}
+          </AvatarFallback>
+          <AvatarImage className="object-cover" src={profile.avatar} />
+        </Avatar>
+        <div className="text-sm">
+          <p className="font-medium">
+            {profile.first_name}{" "}
+            {profile.middle_name ? profile.middle_name : ""} {profile.last_name}
+          </p>
+          <p className="text-neutral-500">{profile.email}</p>
+        </div>
+      </div>
+    </>
   );
 }

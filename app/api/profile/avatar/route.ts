@@ -1,7 +1,7 @@
 import { imageUpload, imageDelete } from "@/lib/cloudinary.util";
 import { v2 as cloudinary } from "cloudinary";
 import { createClient } from "@/utils/supabase/server";
-import { getProfileById } from "@/app/(main)/profile/profile-actions";
+import { getProfileById } from "@/app/(main)/profile/components/profile-actions";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

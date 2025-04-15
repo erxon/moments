@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import React, { Suspense } from "react";
-import { getProfileById } from "../profile/profile-actions";
+import { getProfileById } from "../profile/components/profile-actions";
 import GallerySelection from "./components/gallery-selection";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";

@@ -1,4 +1,4 @@
-import { getProfileById } from "@/app/(main)/profile/profile-actions";
+import { getProfileById } from "@/app/(main)/profile/components/profile-actions";
 import { createClient } from "@/utils/supabase/server";
 
 async function authenticate() {

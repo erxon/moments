@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { createClient } from "@/utils/supabase/server";
-import { getProfileById } from "@/app/(main)/profile/profile-actions";
+import { getProfileById } from "@/app/(main)/profile/components/profile-actions";
 import Profile from "@/lib/types/profile.types";
 import AvatarDropDown from "./avatar-drop-down";
 

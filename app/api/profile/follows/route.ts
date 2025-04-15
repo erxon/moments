@@ -1,4 +1,4 @@
-import { getProfileById } from "@/app/(main)/profile/profile-actions";
+import { getProfileById } from "@/app/(main)/profile/components/profile-actions";
 import { authenticate } from "@/lib/auth.util";
 import { createClient } from "@/utils/supabase/server";
 
@@ -52,11 +52,15 @@ export async function GET(request: Request) {
       const supabase = await createClient();
       const following = await supabase
         .from("follows")
-        .select(`following(id, first_name,middle_name,last_name, avatar)`)
+        .select(
+          `following(id, first_name,middle_name,last_name, email, avatar)`
+        )
         .eq("follower", user.id);
       const follower = await supabase
         .from("follows")
-        .select(`follower(id, first_name, middle_name, last_name, avatar)`)
+        .select(
+          `follower(id, first_name, middle_name, last_name, email, avatar)`
+        )
         .eq("following", user.id);
 
       const result = { following: following.data, follower: follower.data };

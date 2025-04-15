@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { getProfileById, getSocialsById } from "../profile-actions";
+import { getProfileById, getSocialsById } from "../components/profile-actions";
 import BasicProfileInfo from "../components/forms/basic-profile-info";
 
 export default async function Page() {

@@ -78,6 +78,8 @@ export async function POST(
     const { name, tag_id } = await request.json();
     const supabase = await createClient();
 
+    console.log(name, tag_id, image_id);
+
     if (name) {
       const { data, error } = await supabase
         .from("tags")
@@ -91,7 +93,7 @@ export async function POST(
 
     if (tag_id) {
       const data = await checkForExistingImageTagPair(image_id, tag_id);
-      if (!data) {
+      if (data.length === 0) {
         await addTagToImage(image_id, tag_id, user.id);
       }
     }
@@ -142,5 +144,5 @@ async function addTagToImage(
     throw new Error(error.message);
   }
 
-  return new Response("Tag successfully added to the image", { status: 200 });
+  return;
 }

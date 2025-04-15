@@ -1,10 +1,9 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import SideNavBar from "../../components/sidenavbar";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { getProfileById } from "./profile/profile-actions";
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import CurrentPath from "./current-path";
+import { getProfileById } from "./profile/components/profile-actions";
+import TopNavigation from "@/components/top-navigation";
 
 export default async function Layout({
   children,
@@ -31,12 +30,8 @@ export default async function Layout({
     <SidebarProvider>
       <SideNavBar profile={profile} />
       <main className="min-h-screen w-full mx-2 lg:mx-6">
-        <div className="w-full flex justify-between items-center py-3 text-sm">
-          <div className="flex items-center gap-2">
-            <SidebarTrigger />
-            {/* <CurrentPath /> */}
-          </div>
-          <ThemeSwitcher />
+        <div className="mb-10">
+          <TopNavigation />
         </div>
         <div>{children}</div>
       </main>

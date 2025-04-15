@@ -5,12 +5,11 @@ import useSWR from "swr";
 import Profile from "@/lib/types/profile.types";
 import Image from "next/image";
 import Socials from "./socials";
-import Follows from "./components/follows";
+import AuthenticatedUserFollows from "./authenticated-user-follows";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { ImageIcon, PencilIcon } from "lucide-react";
-import { Toaster } from "sonner";
 import { localeDateStringFormatter } from "@/lib/date.util";
 import LoadErrorMessage from "@/components/load-error-message";
 import { UsersRoundIcon } from "lucide-react";
@@ -21,7 +20,7 @@ TODO:
 [ ] Add followers in the basic info
 */
 
-export default function MainProfile() {
+export default function AuthenticatedUserProfile() {
   const { data, error, isLoading } = useSWR("/api/profile", fetcher);
   const router = useRouter();
 
@@ -94,12 +93,11 @@ export default function MainProfile() {
               <UsersRoundIcon className="w-4 h-4" />
               <p className="font-medium">Socials</p>
             </div>
-            <Socials />
+            <Socials user_id={profile.id} />
           </div>
-          <Follows />
+          <AuthenticatedUserFollows />
         </div>
       </div>
-      <Toaster richColors />
     </div>
   );
 }

@@ -6,7 +6,7 @@ import { SubmitButton } from "@/components/submit-button";
 import {
   createProfile,
   getProfileById,
-} from "../(main)/profile/profile-actions";
+} from "../(main)/profile/components/profile-actions";
 import { FormMessage, Message } from "@/components/form-message";
 import FinishSignup from "./finish-signup";
 
