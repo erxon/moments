@@ -8,7 +8,7 @@ import {
   localeTimeStringFormatter,
 } from "@/lib/date.util";
 import { Skeleton } from "@/components/ui/skeleton";
-import captilizeFirstLetter from "@/lib/string.util";
+import { captilizeFirstLetter } from "@/lib/string.util";
 import { Globe, Image } from "lucide-react";
 import { Lock } from "lucide-react";
 import { UsersRound } from "lucide-react";

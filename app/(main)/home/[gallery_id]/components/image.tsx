@@ -1,3 +1,5 @@
+"use client";
+
 import { Image as ImageIcon } from "lucide-react";
 import Image from "next/image";
 import ImageType from "@/lib/types/image.types";
@@ -20,6 +22,7 @@ import DeleteDialog from "./delete-dialog";
 import EditDialogForm from "./edit-dialog-form";
 import Tags from "./tags";
 import AddTag from "./add-tag";
+import { useRouter } from "next/navigation";
 
 export default function ImageComponent({
   image,
@@ -28,6 +31,7 @@ export default function ImageComponent({
   image: ImageType;
   gallery_id: string;
 }) {
+  const router = useRouter();
   const [isEditDialogFormOpen, setIsEditDialogFormOpen] = useState(false);
   const [imageToEdit, setImageToEdit] = useState<ImageType | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
@@ -56,7 +60,11 @@ export default function ImageComponent({
             <EllipsisIcon className="w-4 h-4" />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                router.push(`/image/${image.id}`);
+              }}
+            >
               <ImageIcon className="w-4 h-4" /> View
             </DropdownMenuItem>
             <DropdownMenuItem

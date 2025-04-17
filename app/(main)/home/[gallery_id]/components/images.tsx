@@ -1,41 +1,10 @@
 "use client";
 
-import {
-  EllipsisIcon,
-  Image as ImageIcon,
-  Pencil,
-  TagIcon,
-  Trash,
-} from "lucide-react";
-import Image from "next/image";
-import useSWR, { mutate } from "swr";
+import { Image as ImageIcon } from "lucide-react";
+import useSWR from "swr";
 import { fetcher } from "@/lib/swr.util";
 import ImageType from "@/lib/types/image.types";
-import {
-  localeDateStringFormatter,
-  localeTimeStringFormatter,
-} from "@/lib/date.util";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  DropdownMenu,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-  DialogClose,
-} from "@/components/ui/dialog";
-import { useState } from "react";
-import axios from "axios";
-import triggerSuccessToast from "@/components/toast/trigger-success-toast";
-import triggerErrorToast from "@/components/toast/trigger-error-toast";
 import ImageComponent from "./image";
 
 function LoadImages({ gallery_id }: { gallery_id: string }) {
