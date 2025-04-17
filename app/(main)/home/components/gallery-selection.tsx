@@ -30,7 +30,11 @@ export default function GallerySelection() {
         {galleries.length > 0 ? (
           <div className="flex flex-col gap-1">
             {galleries.map((gallery: Gallery) => (
-              <GalleryLink key={gallery.id} gallery={gallery} />
+              <GalleryLink
+                href={`/home/${gallery.id}`}
+                key={gallery.id}
+                gallery={gallery}
+              />
             ))}
           </div>
         ) : (

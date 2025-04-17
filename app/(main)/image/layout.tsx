@@ -17,6 +17,16 @@ export default async function Layout({
     redirect("/sign-in");
   }
 
+  const { data: profile, error: getProfileError } = await supabase
+    .from("profile")
+    .select()
+    .eq("id", user.id)
+    .single();
+
+  if (!profile || getProfileError) {
+    redirect("/finalize");
+  }
+
   return (
     <>
       <div>{children}</div>

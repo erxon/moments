@@ -44,7 +44,13 @@ function LoadImages({ gallery_id }: { gallery_id: string }) {
   );
 }
 
-export default function GalleryImages({ gallery_id }: { gallery_id: string }) {
+export default function GalleryImages({
+  gallery_id,
+  user_id,
+}: {
+  user_id: string;
+  gallery_id: string;
+}) {
   return <LoadImages gallery_id={gallery_id} />;
 }
 

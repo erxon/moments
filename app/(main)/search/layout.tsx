@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { Toaster } from "sonner";
+import { getProfileById } from "../profile/components/profile-actions";
 
 export default async function Layout({
   children,
@@ -17,6 +18,12 @@ export default async function Layout({
 
   if (error || !user) {
     return redirect("/sign-in");
+  }
+
+  const profile = await getProfileById(user.id);
+
+  if (!profile) {
+    redirect("/finalize");
   }
 
   return (

@@ -8,22 +8,23 @@ import { SetStateAction } from "react";
 import { Button } from "@/components/ui/button";
 
 export default function GalleryLink({
+  href,
   gallery,
   onClick,
 }: {
+  href: string;
   gallery: Gallery;
   onClick?: any;
 }) {
   return (
     <Link
       onClick={onClick}
-      href={`/home/${gallery.id}`}
+      href={href}
       key={gallery.id}
       className="p-2 hover:bg-neutral-100 border-neutral-100 flex items-center rounded-lg"
     >
       <Images strokeWidth={1} className="text-neutral-500 mr-2 w-4 h-4" />
       <p className="grow text-sm">{gallery.title}</p>
-      <Badge variant="secondary">{gallery.total_images}</Badge>
     </Link>
   );
 }

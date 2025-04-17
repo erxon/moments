@@ -34,6 +34,7 @@ export default function MobileGallery({ galleries }: { galleries: Gallery[] }) {
             <div className="flex flex-col">
               {galleries.map((gallery: Gallery) => (
                 <GalleryLink
+                  href={`/home/${gallery.id}`}
                   onClick={() => setOpen(false)}
                   key={gallery.id}
                   gallery={gallery}

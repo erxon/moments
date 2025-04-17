@@ -16,7 +16,13 @@ import { Button } from "@/components/ui/button";
 import Images from "./images";
 import UploadImageButton from "./upload-image-button";
 
-export default function GalleryView({ gallery_id }: { gallery_id: string }) {
+export default function GalleryView({
+  gallery_id,
+  user_id,
+}: {
+  gallery_id: string;
+  user_id: string;
+}) {
   const { data, error, isLoading } = useSWR(
     `/api/gallery/${gallery_id}`,
     fetcher
@@ -67,7 +73,7 @@ export default function GalleryView({ gallery_id }: { gallery_id: string }) {
         </div>
         <p className="mb-2">{gallery.description}</p>
       </div>
-      <Images gallery_id={gallery_id} />
+      <Images user_id={user_id} gallery_id={gallery_id} />
     </>
   );
 }

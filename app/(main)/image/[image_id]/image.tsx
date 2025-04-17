@@ -4,15 +4,44 @@ import ImageType from "@/lib/types/image.types";
 import DisplayImage from "../components/display-image";
 import Tags from "../components/tags";
 import { TagIcon } from "lucide-react";
+import { redirect } from "next/navigation";
 
 export default async function ImageView({ image_id }: { image_id: string }) {
   const supabase = await createClient();
+
+  const {
+    data: { user },
+    error: errorFetchingUser,
+  } = await supabase.auth.getUser();
+
+  if (!user || errorFetchingUser) {
+    return redirect("/sign-in");
+  }
 
   const { data, error } = await supabase
     .from("image")
     .select()
     .eq("id", image_id)
     .single();
+
+  //check if the user follows the owner of the image
+
+  if (data.visibility === "followers") {
+    const { data: follows, error: followsError } = await supabase
+      .from("follows")
+      .select()
+      .eq("follower", user.id)
+      .eq("following", data?.user_id)
+      .single();
+
+    if (!follows || followsError) {
+      return (
+        <>
+          <div>Follow the user to view this image.</div>
+        </>
+      );
+    }
+  }
 
   const image = data as ImageType;
 
