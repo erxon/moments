@@ -58,13 +58,13 @@ export default function AuthenticatedUserFollows() {
         <TabsTrigger className="gap-2" value="following">
           Following{" "}
           {data.following.length > 0 && (
-            <Badge>{data.following.length}</Badge>
+            <Badge className="ml-2">{data.following.length}</Badge>
           )}{" "}
         </TabsTrigger>
         <TabsTrigger value="followers">
           Followers{" "}
           {data.follower.length > 0 && (
-            <Badge>{data.follower.length}</Badge>
+            <Badge className="ml-2">{data.follower.length}</Badge>
           )}{" "}
         </TabsTrigger>
       </TabsList>
@@ -79,7 +79,72 @@ export default function AuthenticatedUserFollows() {
 }
 
 function Following({ following }: { following: FollowingProps[] }) {
-  const [followingList, setFollowingList] = useState(following);
+  return (
+    <>
+      {following.length > 0 ? (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Following</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {following.map((item) => (
+              <DisplayUser
+                key={item.following.id}
+                user={item.following}
+                type="following"
+              />
+            ))}
+          </CardContent>
+        </Card>
+      ) : (
+        <Card>
+          <CardHeader>
+            <CardDescription>No followers yet</CardDescription>
+          </CardHeader>
+        </Card>
+      )}
+    </>
+  );
+}
+
+function Followers({ follower }: { follower: FollowerProps[] }) {
+  return (
+    <>
+      {follower.length > 0 ? (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Followers</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {follower.map((item) => (
+              <DisplayUser user={item.follower} type="follower" />
+            ))}
+          </CardContent>
+        </Card>
+      ) : (
+        <Card>
+          <CardHeader>
+            <CardDescription>No followers yet</CardDescription>
+          </CardHeader>
+        </Card>
+      )}
+    </>
+  );
+}
+function DisplayUser({
+  user,
+  type,
+}: {
+  user: {
+    id?: string;
+    first_name?: string;
+    middle_name?: string;
+    last_name?: string;
+    email?: string;
+    avatar?: string;
+  };
+  type: string;
+}) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   async function handleUnfollow(id?: string) {
     try {
@@ -90,10 +155,6 @@ function Following({ following }: { following: FollowingProps[] }) {
       });
 
       if (result.status === 200) {
-        setFollowingList(
-          followingList.filter((item) => item.following.id !== id)
-        );
-
         mutate("/api/profile/follows");
 
         toast.success(result.data, {
@@ -132,78 +193,7 @@ function Following({ following }: { following: FollowingProps[] }) {
 
     setIsLoading(false);
   }
-  return (
-    <>
-      {followingList.length > 0 ? (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Following</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {followingList.map((item) => (
-              <DisplayUser
-                key={item.following.id}
-                user={item.following}
-                type="following"
-                unfollow={handleUnfollow}
-                isLoading={isLoading}
-              />
-            ))}
-          </CardContent>
-        </Card>
-      ) : (
-        <Card>
-          <CardHeader>
-            <CardDescription>No followers yet</CardDescription>
-          </CardHeader>
-        </Card>
-      )}
-    </>
-  );
-}
 
-function Followers({ follower }: { follower: FollowerProps[] }) {
-  return (
-    <>
-      {follower.length > 0 ? (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Followers</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {follower.map((item) => (
-              <DisplayUser user={item.follower} type="following" />
-            ))}
-          </CardContent>
-        </Card>
-      ) : (
-        <Card>
-          <CardHeader>
-            <CardDescription>No followers yet</CardDescription>
-          </CardHeader>
-        </Card>
-      )}
-    </>
-  );
-}
-function DisplayUser({
-  user,
-  type,
-  unfollow,
-  isLoading,
-}: {
-  user: {
-    id?: string;
-    first_name?: string;
-    middle_name?: string;
-    last_name?: string;
-    email?: string;
-    avatar?: string;
-  };
-  type: string;
-  unfollow?: (id?: string) => {};
-  isLoading?: boolean;
-}) {
   return (
     <div className="flex items-center gap-3 p-2 rounded-md">
       <Avatar>
@@ -213,7 +203,7 @@ function DisplayUser({
             .concat(user.last_name!.charAt(0))
             .toUpperCase()}
         </AvatarFallback>
-        <AvatarImage src={user.avatar} />
+        <AvatarImage className="object-cover" src={user.avatar} />
       </Avatar>
       <div className="grow text-sm">
         <p className="font-medium">
@@ -225,7 +215,7 @@ function DisplayUser({
       {type === "following" && (
         <Button
           onClick={() => {
-            unfollow && unfollow(user.id);
+            handleUnfollow(user.id);
           }}
           disabled={isLoading}
           size="sm"

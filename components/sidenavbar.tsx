@@ -8,7 +8,6 @@ import {
   UserIcon,
   Users,
 } from "lucide-react";
-
 import {
   Sidebar,
   SidebarContent,
@@ -21,8 +20,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Card, CardContent } from "./ui/card";
-import { Avatar, AvatarImage } from "./ui/avatar";
 import Profile from "@/lib/types/profile.types";
 import ProfilePicturePlaceholder from "@/lib/assets/profile-picture-placeholder.png";
 import Image from "next/image";
@@ -34,25 +31,19 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "./ui/dropdown-menu";
-import Link from "next/link";
 import { signOutAction } from "@/app/actions";
 import { useRouter } from "next/navigation";
 
 const items = [
   {
     title: "Home",
-    url: "/protected",
+    url: "/home",
     icon: House,
   },
   {
     title: "Feed",
     url: "/feed",
     icon: Newspaper,
-  },
-  {
-    title: "Followed",
-    url: "/followed",
-    icon: Users,
   },
 ];
 
