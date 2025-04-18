@@ -22,19 +22,10 @@ export default async function Page({
     redirect("/sign-in");
   }
 
-  const { data: profile } = await supabase
-    .from("profile")
-    .select()
-    .eq("id", user_id);
-
-  if (!profile || profile.length === 0) {
-    redirect("/not-found");
-  }
-
   return (
     <>
       <div>
-        <Profile profile={profile[0]} />
+        <Profile user_id={user_id} />
       </div>
     </>
   );

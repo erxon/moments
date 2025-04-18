@@ -2,6 +2,14 @@ import { getProfileById } from "@/app/(main)/profile/components/profile-actions"
 import { authenticate } from "@/lib/auth.util";
 import { createClient } from "@/utils/supabase/server";
 
+/**
+ * Handles a POST request to follow a user.
+ *
+ * @param {Request} request - The incoming HTTP request object.
+ * @returns {Promise<Response>} - A promise that resolves to an HTTP response indicating if the authenticated user is following the user with the specified ID.
+ *
+ * The function authenticates the user, extracts the 'following' JSON payload from the request, and checks if there's a record in the 'follows' table where the authenticated user is the follower and the specified ID is the following. If a record exists, returns a 400 status with an error message. Otherwise, it inserts a new record in the 'follows' table and returns a 200 status with a success message. If an error occurs, returns a 400 status with an error message.
+ */
 export async function POST(request: Request) {
   //follow
   const body = await request.json();
@@ -45,6 +53,14 @@ export async function POST(request: Request) {
   }
 }
 
+/**
+ * Handles a GET request to retrieve the users that the authenticated user is following, and also the users that are following the authenticated user.
+ *
+ * @param {Request} request - The incoming HTTP request object.
+ * @returns {Promise<Response>} - A promise that resolves to an HTTP response containing the following and follower information of the authenticated user in JSON format.
+ *
+ * The function authenticates the user and fetches the following and follower information from the 'follows' table in the database. If an error occurs, it returns a 400 status with an error message.
+ */
 export async function GET(request: Request) {
   try {
     const user = await authenticate();
