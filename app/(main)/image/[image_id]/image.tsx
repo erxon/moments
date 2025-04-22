@@ -14,7 +14,7 @@ export default async function ImageView({ image_id }: { image_id: string }) {
     error: errorFetchingUser,
   } = await supabase.auth.getUser();
 
-  if (!user || errorFetchingUser) {
+  if (!user) {
     return redirect("/sign-in");
   }
 
@@ -24,6 +24,7 @@ export default async function ImageView({ image_id }: { image_id: string }) {
     .eq("id", image_id)
     .single();
 
+  const image = data as ImageType;
   //check if the user follows the owner of the image
 
   if (data.visibility === "followers") {
@@ -34,6 +35,14 @@ export default async function ImageView({ image_id }: { image_id: string }) {
       .eq("following", data?.user_id)
       .single();
 
+    if (follows) {
+      return (
+        <>
+          <Image image={image} />
+        </>
+      );
+    }
+
     if (!follows || followsError) {
       return (
         <>
@@ -43,8 +52,10 @@ export default async function ImageView({ image_id }: { image_id: string }) {
     }
   }
 
-  const image = data as ImageType;
+  return <Image image={image} />;
+}
 
+function Image({ image }: { image: ImageType }) {
   return (
     <>
       <div className="flex flex-col gap-4">

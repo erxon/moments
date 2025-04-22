@@ -7,6 +7,8 @@ export async function GET(
 ) {
   try {
     const user = await authenticate();
+    const { searchParams } = new URL(request.url);
+    const number = searchParams.get("number") as unknown as number;
     const supabase = await createClient();
 
     const { image_id } = await params;
@@ -16,6 +18,17 @@ export async function GET(
       .select("*")
       .order("created_at", { ascending: false })
       .eq("image_id", image_id);
+
+    if (number && number > 0) {
+      const { data, error } = await supabase
+        .from("comments")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(number)
+        .eq("image_id", image_id);
+
+      return new Response(JSON.stringify(data), { status: 200 });
+    }
 
     if (error) {
       throw new Error(error.message);
