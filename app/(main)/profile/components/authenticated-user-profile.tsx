@@ -32,8 +32,8 @@ export default function AuthenticatedUserProfile() {
 
   return (
     <div className="p-3">
-      <div className="grid lg:grid-cols-4">
-        <div className="col-span-2 flex flex-col gap-4">
+      <div className="md:grid md:grid-cols-4">
+        <div className="md:col-span-2 flex flex-col gap-4">
           <div className="mb-5 flex flex-col md:flex-row md:items-center ">
             <h1 className="text-xl font-semibold grow">
               Hi {profile.first_name}!
