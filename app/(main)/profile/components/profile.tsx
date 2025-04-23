@@ -48,10 +48,10 @@ export default function Profile({ user_id }: { user_id: string }) {
 
   return (
     <div className="p-3">
-      <div className="grid lg:grid-cols-8 gap-4">
-        <div className="col-span-5 flex flex-col gap-4">
+      <div className="md:grid lg:grid-cols-8 gap-4">
+        <div className="md:col-span-5 flex flex-col gap-4">
           <div className="mb-4">
-            <div className="flex justify-between items-start">
+            <div className="flex flex-col md:flex-row items-center md:justify-between md:items-start">
               <div className="aspect-square w-[120px] h-[120px] mb-3">
                 {profile.avatar ? (
                   <Image
@@ -71,7 +71,7 @@ export default function Profile({ user_id }: { user_id: string }) {
               </div>
               <FollowButton profile={profile} />
             </div>
-            <div>
+            <div className="flex flex-col items-center md:block mt-4 md:mt-0">
               <p className="text-lg font-medium">
                 {profile.first_name}{" "}
                 {profile.middle_name ? profile.middle_name : ""}{" "}
@@ -100,7 +100,7 @@ export default function Profile({ user_id }: { user_id: string }) {
           </div>
           <Follows user_id={profile.id} />
         </div>
-        <div className="col-span-3">
+        <div className="md:col-span-3 mt-4 md:mt-0">
           <Galleries user_id={profile.id!} />
         </div>
       </div>
