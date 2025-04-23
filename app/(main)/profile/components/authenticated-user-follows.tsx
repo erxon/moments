@@ -82,20 +82,15 @@ function Following({ following }: { following: FollowingProps[] }) {
   return (
     <>
       {following.length > 0 ? (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Following</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {following.map((item) => (
-              <DisplayUser
-                key={item.following.id}
-                user={item.following}
-                type="following"
-              />
-            ))}
-          </CardContent>
-        </Card>
+        <div className="flex flex-col gap-2">
+          {following.map((item) => (
+            <DisplayUser
+              key={item.following.id}
+              user={item.following}
+              type="following"
+            />
+          ))}
+        </div>
       ) : (
         <Card>
           <CardHeader>
@@ -111,16 +106,11 @@ function Followers({ follower }: { follower: FollowerProps[] }) {
   return (
     <>
       {follower.length > 0 ? (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Followers</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {follower.map((item) => (
-              <DisplayUser user={item.follower} type="follower" />
-            ))}
-          </CardContent>
-        </Card>
+        <div className="flex flex-col gap-2">
+          {follower.map((item) => (
+            <DisplayUser user={item.follower} type="follower" />
+          ))}
+        </div>
       ) : (
         <Card>
           <CardHeader>

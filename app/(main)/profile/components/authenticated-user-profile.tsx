@@ -81,14 +81,14 @@ export default function AuthenticatedUserProfile() {
               </p>
             </div>
           </div>
-          <div className="flex flex-col gap-2 outline outline-1 outline-neutral-200 p-4 rounded-lg">
+          <div className="flex flex-col gap-2 outline outline-1 outline-neutral-200 md:p-4 p-2 rounded-lg">
             <div className="flex items-center gap-2">
               <PenLine className="w-4 h-4" />
               <p className="font-semibold">Bio</p>
             </div>
             <p className="text-sm">{profile.about}</p>
           </div>
-          <div className="flex flex-col gap-2 outline outline-1 outline-neutral-200 p-4 rounded-lg">
+          <div className="flex flex-col gap-2 outline outline-1 outline-neutral-200 md:p-4 p-2 rounded-lg">
             <div className="flex items-center gap-2">
               <UsersRoundIcon className="w-4 h-4" />
               <p className="font-medium">Socials</p>
