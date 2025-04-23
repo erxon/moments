@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  ChevronsUpDown,
   ChevronUp,
   House,
   LogOut,
@@ -33,6 +34,10 @@ import {
 } from "./ui/dropdown-menu";
 import { signOutAction } from "@/app/actions";
 import { useRouter } from "next/navigation";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { avatarFallbackString } from "@/lib/string.util";
+import Link from "next/link";
+import { useState } from "react";
 
 const items = [
   {
@@ -53,18 +58,15 @@ export default function SideNavBar({ profile }: { profile: Profile }) {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Moments</SidebarGroupLabel>
-          <SidebarGroupAction title="Add Project">
-            <PlusIcon /> <span className="sr-only">Upload Image</span>
-          </SidebarGroupAction>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -72,19 +74,10 @@ export default function SideNavBar({ profile }: { profile: Profile }) {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <ProfileOverview profile={profile} />
+      <SidebarFooter>
+        <ProfileOverview profile={profile} />
+      </SidebarFooter>
     </Sidebar>
-  );
-}
-
-function UploadNewImage() {
-  return (
-    <>
-      <Button size="sm" className="flex gap-2 my-4">
-        <PlusIcon />
-        Upload
-      </Button>
-    </>
   );
 }
 
@@ -98,47 +91,44 @@ function ProfileOverview({
   const router = useRouter();
 
   return (
-    <SidebarFooter>
-      <SidebarMenu>
-        <SidebarMenuItem>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <SidebarMenuButton>
-                <span className="relative flex shrink-0 overflow-hidden h-8 w-8 rounded-lg">
-                  <Image
-                    src={
-                      profile.avatar
-                        ? profile.avatar
-                        : ProfilePicturePlaceholder
-                    }
-                    className="aspect-square h-full w-full object-cover"
-                    alt="Profile Picture"
-                    width={1000}
-                    height={1000}
-                  />
-                </span>
-                <p className="font-semibold truncate">
-                  {profile.first_name} {profile.last_name}
-                </p>
-                <ChevronUp className="ml-auto" />
-              </SidebarMenuButton>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              side="top"
-              className="w-[--radix-popper-anchor-width]"
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <SidebarMenuButton
+              size="lg"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <DropdownMenuItem onClick={() => router.push("/profile")}>
-                <UserIcon className="" />
-                Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={signOutAction}>
-                <LogOut />
-                Sign-out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </SidebarMenuItem>
-      </SidebarMenu>
-    </SidebarFooter>
+              <Avatar className="relative shrink-0 overflow-hidden h-8 w-8 rounded-lg">
+                <AvatarFallback>
+                  {avatarFallbackString(
+                    profile.first_name!,
+                    profile.last_name!
+                  )}
+                </AvatarFallback>
+                <AvatarImage className="object-cover" src={profile.avatar} />
+              </Avatar>
+              <p className="font-semibold truncate">
+                {profile.first_name} {profile.last_name}
+              </p>
+              <ChevronsUpDown className="ml-auto" />
+            </SidebarMenuButton>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            side="top"
+            className="w-[--radix-popper-anchor-width]"
+          >
+            <DropdownMenuItem onClick={() => router.push("/profile")}>
+              <UserIcon className="" />
+              Profile
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={signOutAction}>
+              <LogOut />
+              Sign-out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </SidebarMenuItem>
+    </SidebarMenu>
   );
 }

@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import ImageView from "./image";
 import { Skeleton } from "@/components/ui/skeleton";
 import Comments from "../components/comments/comments";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default async function Page({
   params,
@@ -11,13 +12,13 @@ export default async function Page({
   const { image_id } = await params;
   return (
     <>
-      <div className="grid grid-cols-6">
-        <div className="col-span-4 px-4">
+      <div className="lg:grid lg:grid-cols-6 flex flex-col gap-4">
+        <div className="lg:col-span-4 px-4">
           <Suspense fallback={<Loading />}>
             <ImageView image_id={image_id} />
           </Suspense>
         </div>
-        <div className="col-span-2 px-2">
+        <div className="lg:col-span-2 px-2 mb-4">
           <Comments image_id={image_id} />
         </div>
       </div>

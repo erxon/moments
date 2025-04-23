@@ -19,7 +19,7 @@ export default function Search() {
       <div className="flex items-center gap-2">
         <div className="relative">
           <Input
-            className="md:w-[500px] pl-10 rounded-full"
+            className="lg:w-[500px] pl-10 rounded-full"
             placeholder="Search"
             onChange={(e) => setSearch(e.target.value)}
             value={search}

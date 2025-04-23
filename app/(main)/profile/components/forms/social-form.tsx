@@ -71,7 +71,7 @@ export default function SocialForm({ socials }: { socials: Socials }) {
   };
   return (
     <>
-      <div className="w-full mb-3 p-3 bg-neutral-50 rounded-md">
+      <div className="w-full mb-3 p-3 rounded-md">
         <p className="font-medium mb-3">Socials</p>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)}>

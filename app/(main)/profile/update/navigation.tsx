@@ -14,7 +14,7 @@ export default function Navigation() {
       <div className="flex flex-row lg:flex-col items-start m-1">
         <Link
           className={clsx(
-            "w-full p-2 transition hover:bg-blue-400 rounded-sm lg:mb-1 mr-1 flex text-sm",
+            "w-full p-2 transition hover:bg-secondary rounded-sm lg:mb-1 mr-1 flex text-sm",
             pathname === "/profile/update" && "bg-secondary"
           )}
           href="/profile/update"

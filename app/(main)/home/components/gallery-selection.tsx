@@ -42,7 +42,7 @@ export default function GallerySelection() {
         )}
       </div>
       <div className="lg:hidden block">
-        <MobileGallery galleries={galleries} />
+        <MobileGallery path="/home" galleries={galleries} />
       </div>
     </div>
   );

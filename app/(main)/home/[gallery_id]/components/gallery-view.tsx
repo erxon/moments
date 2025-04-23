@@ -9,7 +9,7 @@ import {
 } from "@/lib/date.util";
 import { Skeleton } from "@/components/ui/skeleton";
 import { captilizeFirstLetter } from "@/lib/string.util";
-import { Globe, Image } from "lucide-react";
+import { Globe, Image, PenBox } from "lucide-react";
 import { Lock } from "lucide-react";
 import { UsersRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -52,26 +52,35 @@ export default function GalleryView({
       <div className="mb-8">
         <div className="mb-4 flex">
           <div className="grow">
-            <div className="flex mb-2">
-              <h1 className="text-3xl font-medium grow">{gallery.title}</h1>
+            <div className="flex flex-col md:flex-row md:justify-between gap-2 mb-2">
+              <div>
+                <h1 className="text-xl lg:text-3xl font-medium grow">
+                  {gallery.title}
+                </h1>
+                <p className="text-sm text-neutral-500">
+                  Created at {localeDateStringFormatter(createdAt)}{" "}
+                </p>
+                <p className="text-sm mb-1 text-neutral-500">
+                  Last updated {localeDateStringFormatter(updatedAt)}{" "}
+                  {localeTimeStringFormatter(timeUpdated)}
+                </p>
+
+                <div className="flex items-center gap-1 text-sm">
+                  <VisibilityIcon visibility={gallery.visibility} />
+                  <p>{visibility}</p>
+                </div>
+              </div>
+
               <UploadImageButton gallery_id={gallery_id} />
-            </div>
-
-            <p className="text-sm text-neutral-500">
-              Created at {localeDateStringFormatter(createdAt)}{" "}
-            </p>
-            <p className="text-sm mb-1 text-neutral-500">
-              Last updated {localeDateStringFormatter(updatedAt)}{" "}
-              {localeTimeStringFormatter(timeUpdated)}
-            </p>
-
-            <div className="flex items-center gap-1 text-sm">
-              <VisibilityIcon visibility={gallery.visibility} />
-              <p>{visibility}</p>
             </div>
           </div>
         </div>
-        <p className="mb-2">{gallery.description}</p>
+        <div className="mb-1 text-sm border rounded-lg p-4">
+          <div className="flex gap-1 items-center mb-1">
+            <PenBox className="w-4 h-4" />
+          </div>
+          <p className="text-neutral-600">{gallery.description}</p>
+        </div>
       </div>
       <Images user_id={user_id} gallery_id={gallery_id} />
     </>

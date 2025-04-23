@@ -27,10 +27,10 @@ export default async function Layout({
 
   return (
     <>
-      <div className="md:grid md:grid-cols-12">
-        <div className="md:col-span-3">{/* */}</div>
-        <div className="md:col-span-6 md:gap-4">{children}</div>
-        <div className="md:col-span-3"></div>
+      <div className="lg:grid lg:grid-cols-12">
+        <div className="lg:col-span-3">{/* */}</div>
+        <div className="lg:col-span-6 lg:gap-4">{children}</div>
+        <div className="lg:col-span-3"></div>
         <Toaster richColors />
       </div>
     </>

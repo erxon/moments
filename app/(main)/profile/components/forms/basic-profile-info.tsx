@@ -114,7 +114,7 @@ export default function BasicProfileInfo({
   return (
     <>
       <UpdateAvatarForm avatar={profile?.avatar} />
-      <div className="my-5 bg-neutral-50 p-3 rounded-md">
+      <div className="my-5 p-3 rounded-md">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmission)}>
             <div className="md:grid md:grid-cols-3 gap-4 mb-3">

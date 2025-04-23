@@ -40,7 +40,7 @@ export default function Tags({ image_id }: { image_id: string }) {
         {tags.map((tag) => (
           <div
             key={tag.tag_id.id}
-            className="bg-neutral-100 text-sm p-1 px-2 rounded-full"
+            className="bg-secondary text-sm p-1 px-2 rounded-full"
           >
             {tag.tag_id.name}
           </div>

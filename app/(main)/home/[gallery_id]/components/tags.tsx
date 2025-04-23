@@ -26,7 +26,7 @@ export default function Tags({ image_id }: { image_id: string }) {
         {tags.map((tag) => (
           <span
             key={tag.tag_id.id}
-            className="text-xs text-neutral-500 bg-neutral-100 px-2 py-1 rounded-full"
+            className="text-xs bg-secondary px-2 py-1 rounded-full"
           >
             {tag.tag_id.name}
           </span>

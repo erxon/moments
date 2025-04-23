@@ -34,7 +34,7 @@ export default function AuthenticatedUserProfile() {
     <div className="p-3">
       <div className="grid lg:grid-cols-4">
         <div className="col-span-2 flex flex-col gap-4">
-          <div className="mb-5 flex items-center">
+          <div className="mb-5 flex flex-col md:flex-row md:items-center ">
             <h1 className="text-xl font-semibold grow">
               Hi {profile.first_name}!
             </h1>
@@ -50,7 +50,7 @@ export default function AuthenticatedUserProfile() {
               <PencilIcon className="w-4 h-4" />
             </Button>
           </div>
-          <div className="mb-4">
+          <div className="mb-4 flex flex-col items-center md:block">
             <div className="aspect-square w-[120px] h-[120px] mb-3">
               {data.avatar ? (
                 <Image
@@ -68,7 +68,7 @@ export default function AuthenticatedUserProfile() {
                 </div>
               )}
             </div>
-            <div>
+            <div className="flex flex-col items-center md:block">
               <p className="text-lg font-medium">
                 {profile.first_name}{" "}
                 {profile.middle_name ? profile.middle_name : ""}{" "}

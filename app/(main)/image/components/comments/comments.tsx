@@ -2,6 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import CommentField from "./comment-field";
 import { MessageSquareText } from "lucide-react";
 import DisplayComments from "./display-comments";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default async function Comments({ image_id }: { image_id: string }) {
   const supabase = await createClient();
@@ -40,7 +41,12 @@ export default async function Comments({ image_id }: { image_id: string }) {
               image_id={image_id}
             />
           </div>
-          <DisplayComments image_id={image_id} auth_user={profile} />
+          <ScrollArea className="h-[300px] md:hidden">
+            <DisplayComments image_id={image_id} auth_user={profile} />
+          </ScrollArea>
+          <div className="hidden md:block">
+            <DisplayComments image_id={image_id} auth_user={profile} />
+          </div>
         </div>
       </div>
     </>

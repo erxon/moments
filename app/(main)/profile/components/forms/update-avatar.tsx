@@ -56,7 +56,7 @@ export default function UpdateAvatar({ avatar }: { avatar?: string }) {
   };
 
   return (
-    <div className="bg-neutral-50 p-3 rounded-md">
+    <div className="p-3 rounded-md">
       <div className="flex items-center gap-3">
         {!file ? (
           <Image

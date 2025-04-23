@@ -5,6 +5,7 @@ import { fetcher } from "@/lib/swr.util";
 import { Skeleton } from "@/components/ui/skeleton";
 import type CommentType from "@/lib/types/comment.types";
 import Comment from "@/components/comment";
+import CommentSkeleton from "@/components/skeletons/comment";
 
 export default function FeedComments({ image_id }: { image_id: string }) {
   const { data, isLoading, error } = useSWR(
@@ -17,12 +18,7 @@ export default function FeedComments({ image_id }: { image_id: string }) {
   }
 
   if (isLoading) {
-    return (
-      <div className="flex flex-col gap-2">
-        <Skeleton className="w-full h-[56px]" />
-        <Skeleton className="w-full h-[56px]" />
-      </div>
-    );
+    return <CommentSkeleton />;
   }
 
   return (

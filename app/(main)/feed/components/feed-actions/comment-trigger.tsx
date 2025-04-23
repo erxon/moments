@@ -30,6 +30,7 @@ import triggerErrorToast from "@/components/toast/trigger-error-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Comment from "@/components/comment";
 import type CommentType from "@/lib/types/comment.types";
+import CommentSkeleton from "@/components/skeletons/comment";
 
 export default function CommentTrigger({ image }: { image: ImageType }) {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
@@ -95,9 +96,7 @@ function Comments({ image_id }: { image_id: string }) {
   if (isLoading) {
     return (
       <div className="flex flex-col gap-2">
-        <Skeleton className="h-[40px]" />
-        <Skeleton className="h-[40px]" />
-        <Skeleton className="h-[40px]" />
+        <CommentSkeleton />
       </div>
     );
   }

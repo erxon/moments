@@ -34,7 +34,7 @@ export default async function Layout({
   return (
     <>
       <div className="lg:grid lg:grid-cols-12 gap-12">
-        <div className="lg:col-span-3">
+        <div className="lg:col-span-3 mb-4">
           <div className="flex items-center mb-3">
             <h1 className="text-2xl grow font-medium">Gallery</h1>
             <CreateGallery />

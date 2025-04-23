@@ -6,6 +6,7 @@ import { Skeleton } from "./ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { avatarFallbackString } from "@/lib/string.util";
 import Profile from "@/lib/types/profile.types";
+import UserSkeleton from "./skeletons/user";
 
 export default function User({
   user_id,
@@ -21,15 +22,7 @@ export default function User({
   }
 
   if (isLoading) {
-    return (
-      <div className="flex items-center gap-2">
-        <Skeleton className="w-[42px] h-[42px] rounded-full" />
-        <div className="flex flex-col gap-2">
-          <Skeleton className="w-[100px] h-4" />
-          <Skeleton className="w-[120px] h-4" />
-        </div>
-      </div>
-    );
+    return <UserSkeleton />;
   }
 
   const profile = data[0] as Profile;
@@ -48,7 +41,7 @@ export default function User({
             <p className="text-sm font-semibold">
               {profile.first_name} {profile.last_name}
             </p>
-            <p className="text-sm ">{profile.email}</p>
+            <p className="text-sm text-neutral-500">{profile.email}</p>
           </div>
         </div>
       </div>
