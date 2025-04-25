@@ -27,12 +27,14 @@ export default function Socials({ user_id }: { user_id?: string }) {
           {socials.facebook && (
             <SocialsContainer>
               <p className="font-medium">Facebook</p>
-              <p className="grow">
-                {socials.facebook?.replace("https://", "")}
-              </p>
-              <Link href={socials.facebook ? socials.facebook : "#"}>
-                <SquareArrowOutUpRight className="w-4 h-4" />
-              </Link>{" "}
+              <div className="flex gap-1 items-center">
+                <p className="grow">
+                  {socials.facebook?.replace("https://", "")}
+                </p>
+                <Link href={socials.facebook ? socials.facebook : "#"}>
+                  <SquareArrowOutUpRight className="w-4 h-4" />
+                </Link>{" "}
+              </div>
             </SocialsContainer>
           )}
           {socials.twitter && (
@@ -71,7 +73,7 @@ export default function Socials({ user_id }: { user_id?: string }) {
 
 function SocialsContainer({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-center gap-2 text-sm transition hover:bg-neutral-50 p-2 rounded-lg">
+    <div className="flex md:items-center md:flex-row flex-col gap-1 text-sm transition hover:bg-neutral-50 p-2 rounded-lg">
       {children}
     </div>
   );

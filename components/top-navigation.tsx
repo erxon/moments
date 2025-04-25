@@ -4,10 +4,8 @@ import Search from "./search";
 
 export default function TopNavigation() {
   return (
-    <div className="w-full flex justify-between items-center py-3 text-sm">
-      <div className="flex items-center gap-2">
-        <SidebarTrigger />
-      </div>
+    <div className="w-full flex justify-between items-center py-3 text-sm gap-2">
+      <SidebarTrigger />
       <Search />
       <ThemeSwitcher />
     </div>

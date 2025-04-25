@@ -4,7 +4,7 @@ import { fetcher } from "@/lib/swr.util";
 import useSWR from "swr";
 import Profile from "@/lib/types/profile.types";
 import Image from "next/image";
-import Socials from "./socials";
+import Socials from "../socials";
 import AuthenticatedUserFollows from "./authenticated-user-follows";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
@@ -32,10 +32,10 @@ export default function AuthenticatedUserProfile() {
 
   return (
     <div className="p-3">
-      <div className="md:grid md:grid-cols-4">
-        <div className="md:col-span-2 flex flex-col gap-4">
-          <div className="mb-5 flex flex-col md:flex-row md:items-center ">
-            <h1 className="text-xl font-semibold grow">
+      <div className="lg:grid lg:grid-cols-4">
+        <div className="lg:col-span-2 flex flex-col gap-4">
+          <div className="mb-5 flex flex-col lg:flex-row lg:items-center ">
+            <h1 className="text-2xl font-semibold grow text-center mb-4 lg:text-start lg:mb-0">
               Hi {profile.first_name}!
             </h1>
             <Button
@@ -50,7 +50,7 @@ export default function AuthenticatedUserProfile() {
               <PencilIcon className="w-4 h-4" />
             </Button>
           </div>
-          <div className="mb-4 flex flex-col items-center md:block">
+          <div className="mb-4 flex flex-col items-center lg:block">
             <div className="aspect-square w-[120px] h-[120px] mb-3">
               {data.avatar ? (
                 <Image

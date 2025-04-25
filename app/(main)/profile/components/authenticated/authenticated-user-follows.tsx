@@ -54,7 +54,7 @@ export default function AuthenticatedUserFollows() {
 
   return (
     <Tabs defaultValue="following">
-      <TabsList>
+      <TabsList className="w-full sm:w-fit">
         <TabsTrigger className="gap-2" value="following">
           Following{" "}
           {data.following.length > 0 && (
@@ -185,7 +185,7 @@ function DisplayUser({
   }
 
   return (
-    <div className="flex items-center gap-3 p-2 rounded-md">
+    <div className="flex md:items-center items-start gap-3 p-2 rounded-md">
       <Avatar>
         <AvatarFallback>
           {user.first_name
@@ -195,25 +195,27 @@ function DisplayUser({
         </AvatarFallback>
         <AvatarImage className="object-cover" src={user.avatar} />
       </Avatar>
-      <div className="grow text-sm">
-        <p className="font-medium">
-          {user.first_name} {user.middle_name ? user.middle_name : ""}{" "}
-          {user.last_name}
-        </p>
-        <p className="text-neutral-500">{user.email}</p>
+      <div className="flex flex-col gap-2 w-full md:flex-row">
+        <div className="grow text-sm">
+          <p className="font-medium">
+            {user.first_name} {user.middle_name ? user.middle_name : ""}{" "}
+            {user.last_name}
+          </p>
+          <p className="text-neutral-500 text-xs md:text-sm">{user.email}</p>
+        </div>
+        {type === "following" && (
+          <Button
+            onClick={() => {
+              handleUnfollow(user.id);
+            }}
+            disabled={isLoading}
+            size="sm"
+            variant="secondary"
+          >
+            {!isLoading ? "Unfollow" : "Unfollowing..."}
+          </Button>
+        )}
       </div>
-      {type === "following" && (
-        <Button
-          onClick={() => {
-            handleUnfollow(user.id);
-          }}
-          disabled={isLoading}
-          size="sm"
-          variant="secondary"
-        >
-          {!isLoading ? "Unfollow" : "Unfollowing..."}
-        </Button>
-      )}
     </div>
   );
 }
