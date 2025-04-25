@@ -11,6 +11,7 @@ export default function Search() {
   const router = useRouter();
 
   const handleSubmit = () => {
+    if (!search) return;
     router.push(`/search?query=${search}`);
   };
 

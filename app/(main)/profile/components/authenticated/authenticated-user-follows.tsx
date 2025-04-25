@@ -20,6 +20,8 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserIcon, UserMinus } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface FollowingProps {
   following: {
@@ -135,6 +137,7 @@ function DisplayUser({
   };
   type: string;
 }) {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   async function handleUnfollow(id?: string) {
     try {
@@ -212,9 +215,18 @@ function DisplayUser({
             size="sm"
             variant="secondary"
           >
+            <UserMinus className="w-4 h-4 mr-1" />
             {!isLoading ? "Unfollow" : "Unfollowing..."}
           </Button>
         )}
+        <Button
+          size={"sm"}
+          className=""
+          onClick={() => router.push(`/profile/${user.id}`)}
+        >
+          <UserIcon className="w-4 h-4 mr-1" />
+          Profile
+        </Button>
       </div>
     </div>
   );
