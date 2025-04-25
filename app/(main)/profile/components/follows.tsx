@@ -15,6 +15,8 @@ import useSWR from "swr";
 import ProfilePicturePlaceholder from "@/lib/assets/profile-picture-placeholder.png";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { UserIcon } from "lucide-react";
 
 export default function Follows({ user_id }: { user_id?: string }) {
   const { data, error, isLoading } = useSWR(
@@ -105,7 +107,7 @@ function Following({ following }: { following: Following[] }) {
 function DisplayProfile({ profile }: { profile: Profile }) {
   return (
     <>
-      <div className="flex items-center gap-3 p-2 rounded-md">
+      <div className="flex md:items-center items-start gap-3 p-2 rounded-md w-full">
         <Avatar>
           <AvatarFallback>
             {profile.first_name
@@ -115,12 +117,19 @@ function DisplayProfile({ profile }: { profile: Profile }) {
           </AvatarFallback>
           <AvatarImage className="object-cover" src={profile.avatar} />
         </Avatar>
-        <div className="text-sm">
-          <p className="font-medium">
-            {profile.first_name}{" "}
-            {profile.middle_name ? profile.middle_name : ""} {profile.last_name}
-          </p>
-          <p className="text-neutral-500">{profile.email}</p>
+        <div className="flex flex-col gap-1 w-full md:gap-2 md:flex-row md:items-center">
+          <div className="text-sm md:grow">
+            <p className="font-medium">
+              {profile.first_name}{" "}
+              {profile.middle_name ? profile.middle_name : ""}{" "}
+              {profile.last_name}
+            </p>
+            <p className="text-neutral-500">{profile.email}</p>
+          </div>
+          <Button size={"sm"}>
+            <UserIcon className="w-4 h-4" />
+            Profile
+          </Button>
         </div>
       </div>
     </>
