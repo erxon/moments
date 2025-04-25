@@ -82,7 +82,7 @@ export default function GalleryView({
           <p className="text-neutral-600">{gallery.description}</p>
         </div>
       </div>
-      <Images user_id={user_id} gallery_id={gallery_id} />
+      <Images gallery_id={gallery_id} />
     </>
   );
 }

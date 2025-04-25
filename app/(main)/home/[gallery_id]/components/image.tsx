@@ -15,30 +15,30 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { EllipsisIcon } from "lucide-react";
 import { TagIcon } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Pencil } from "lucide-react";
 import { Trash } from "lucide-react";
-import DeleteDialog from "./delete-dialog";
-import EditDialogForm from "./edit-dialog-form";
 import Tags from "./tags";
-import AddTag from "./add-tag";
 import { useRouter } from "next/navigation";
+import { set } from "react-hook-form";
 
 export default function ImageComponent({
+  setImageToManipulate,
+  setOpenEditDialog,
+  setOpenDeleteDialog,
+  setAddTagDialogOpen,
   image,
   gallery_id,
 }: {
+  setOpenEditDialog: React.Dispatch<React.SetStateAction<boolean>>;
+  setImageToManipulate: React.Dispatch<React.SetStateAction<ImageType>>;
+  setOpenDeleteDialog: React.Dispatch<React.SetStateAction<boolean>>;
+  setAddTagDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   image: ImageType;
   gallery_id: string;
 }) {
   const router = useRouter();
-  const [isEditDialogFormOpen, setIsEditDialogFormOpen] = useState(false);
-  const [imageToEdit, setImageToEdit] = useState<ImageType | null>(null);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
-  const [imageToDelete, setImageToDelete] = useState<ImageType | null>(null);
-  const [addTagDialogOpen, setAddTagDialogOpen] = useState<boolean>(false);
-  const [imageToAddTag, setImageToAddTag] = useState<ImageType | null>(null);
-
+  const [openDropdown, setOpenDropdown] = useState<boolean>(false);
   const createdAt = localeDateStringFormatter(
     new Date(image.created_at!).toLocaleDateString()
   );
@@ -55,7 +55,7 @@ export default function ImageComponent({
             {createdAt} {timeCreated}
           </p>
         </div>
-        <DropdownMenu>
+        <DropdownMenu open={openDropdown} onOpenChange={setOpenDropdown}>
           <DropdownMenuTrigger>
             <EllipsisIcon className="w-4 h-4" />
           </DropdownMenuTrigger>
@@ -69,16 +69,18 @@ export default function ImageComponent({
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
-                setImageToEdit(image);
-                setIsEditDialogFormOpen(true);
+                setOpenDropdown(false);
+                setImageToManipulate(image);
+                setOpenEditDialog(true);
               }}
             >
               <Pencil className="w-4 h-4" /> Edit
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
-                setImageToDelete(image);
-                setIsDeleteDialogOpen(true);
+                setOpenDropdown(false);
+                setImageToManipulate(image);
+                setOpenDeleteDialog(true);
               }}
             >
               <Trash />
@@ -86,7 +88,8 @@ export default function ImageComponent({
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
-                setImageToAddTag(image);
+                setOpenDropdown(false);
+                setImageToManipulate(image);
                 setAddTagDialogOpen(true);
               }}
             >
@@ -111,29 +114,6 @@ export default function ImageComponent({
         {/* Tags */}
         <Tags image_id={image.id} />
       </div>
-
-      {isEditDialogFormOpen && (
-        <EditDialogForm
-          open={isEditDialogFormOpen}
-          setOpenEditDialogForm={setIsEditDialogFormOpen}
-          image={imageToEdit!}
-          gallery_id={gallery_id}
-        />
-      )}
-      {isDeleteDialogOpen && (
-        <DeleteDialog
-          open={isDeleteDialogOpen}
-          setOpenDeleteDialog={setIsDeleteDialogOpen}
-          image={imageToDelete!}
-        />
-      )}
-      {addTagDialogOpen && (
-        <AddTag
-          open={addTagDialogOpen}
-          setAddTagDialogOpen={setAddTagDialogOpen}
-          image={imageToAddTag!}
-        />
-      )}
     </>
   );
 }

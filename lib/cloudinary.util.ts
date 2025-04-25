@@ -76,13 +76,16 @@ export async function imageUpload(file: File) {
   }
 }
 
-export async function imageDelete(url: string) {
+export async function imageDelete(url: string, folder: string) {
   try {
     const splitUrl = url.split("/");
     const imageName = splitUrl[splitUrl.length - 1];
     const publicId = imageName.split(".")[0];
 
-    await cloudinary.uploader.destroy(publicId);
+    console.log(publicId);
+
+    const result = await cloudinary.uploader.destroy(`${folder}/${publicId}`);
+    console.log(result);
   } catch (error) {
     throw new Error("Something went wrong");
   }

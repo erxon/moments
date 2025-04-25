@@ -1,5 +1,13 @@
 import { createClient } from "@/utils/supabase/server";
 import { authenticate } from "@/lib/auth.util";
+import { v2 as cloudinary } from "cloudinary";
+import { imageDelete } from "@/lib/cloudinary.util";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export async function GET(
   request: Request,
@@ -78,6 +86,8 @@ export async function DELETE(
       .select();
 
     if (deletedImage && deletedImage.length > 0) {
+      //Delete the actual image in cloudinary
+      await imageDelete(deletedImage[0].path, "image-gallery-app");
       const deletedImageGalleryId = deletedImage[0].gallery_id;
 
       const { data: numberOfImages, error: getImagesError } = await supabase

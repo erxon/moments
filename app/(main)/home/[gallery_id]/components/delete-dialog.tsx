@@ -45,7 +45,7 @@ export default function DeleteDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={() => setOpenDeleteDialog(false)}>
+    <Dialog open={open} onOpenChange={setOpenDeleteDialog}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Delete image</DialogTitle>

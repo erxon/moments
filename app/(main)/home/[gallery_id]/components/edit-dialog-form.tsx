@@ -14,6 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
+  DialogPortal,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -81,6 +82,7 @@ export default function EditDialogForm({
       if (result.status === 200) {
         mutate(`/api/gallery/${gallery_id}/images`);
         setIsLoading(false);
+        setOpenEditDialogForm(false);
         triggerSuccessToast(result.data);
       } else {
         triggerErrorToast("Error updating image");
@@ -95,72 +97,70 @@ export default function EditDialogForm({
   };
 
   return (
-    <>
-      <Dialog open={open} onOpenChange={() => setOpenEditDialogForm(false)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Edit image information</DialogTitle>
-            <DialogDescription>
-              Here you can edit the information of the image.
-            </DialogDescription>
-          </DialogHeader>
-          <div>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(handleSubmit)}>
-                <div className="flex flex-col gap-4">
-                  <Title name="title" form={form} />
-                  <Description name="description" form={form} />
-                  <LabelField name="label" form={form} />
-                  <FormField
-                    control={form.control}
-                    name="visibility"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="mb-2">Visibility</FormLabel>
-                        <FormControl>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select visibility" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="public">
-                                <div className="flex gap-1 items-center">
-                                  <GlobeIcon className="w-4 h-4" />
-                                  <p>Public</p>
-                                </div>
-                              </SelectItem>
-                              <SelectItem value="private">
-                                <div className="flex gap-1 items-center">
-                                  <Lock className="w-4 h-4" />
-                                  <p>Private</p>
-                                </div>
-                              </SelectItem>
-                              <SelectItem value="followers">
-                                <div className="flex gap-1 items-center">
-                                  <UsersRound className="w-4 h-4" />
-                                  <p>Followers</p>
-                                </div>
-                              </SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+    <Dialog open={open} onOpenChange={setOpenEditDialogForm}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Edit image information</DialogTitle>
+          <DialogDescription>
+            Here you can edit the information of the image.
+          </DialogDescription>
+        </DialogHeader>
+        <div>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(handleSubmit)}>
+              <div className="flex flex-col gap-4">
+                <Title name="title" form={form} />
+                <Description name="description" form={form} />
+                <LabelField name="label" form={form} />
+                <FormField
+                  control={form.control}
+                  name="visibility"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="mb-2">Visibility</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select visibility" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="public">
+                              <div className="flex gap-1 items-center">
+                                <GlobeIcon className="w-4 h-4" />
+                                <p>Public</p>
+                              </div>
+                            </SelectItem>
+                            <SelectItem value="private">
+                              <div className="flex gap-1 items-center">
+                                <Lock className="w-4 h-4" />
+                                <p>Private</p>
+                              </div>
+                            </SelectItem>
+                            <SelectItem value="followers">
+                              <div className="flex gap-1 items-center">
+                                <UsersRound className="w-4 h-4" />
+                                <p>Followers</p>
+                              </div>
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-                  <Button type="submit" disabled={isLoading}>
-                    {!isLoading ? "Save" : "Saving..."}
-                  </Button>
-                </div>
-              </form>
-            </Form>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
+                <Button type="submit" disabled={isLoading}>
+                  {!isLoading ? "Save" : "Saving..."}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }
