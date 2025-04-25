@@ -83,29 +83,29 @@ function Profile({ profile }: { profile: Profile }) {
           <AvatarImage className="object-cover" src={profile.avatar} />
         </Avatar>
       </div>
-      <div>
+      <div className="w-full md:w-[200px]">
         <p className="text-sm font-medium">
           {profile.first_name} {profile.middle_name} {profile.last_name}
         </p>
         <p className="text-sm text-neutral-500">{profile.email}</p>
         <p className="text-sm text-neutral-500 mb-2">Joined at {joined}</p>
-        <div className="flex gap-2">
+        <div className="w-full flex gap-2">
           <Button
             onClick={() => router.push(`/profile/${profile.id}`)}
             variant="outline"
             size={"sm"}
-            className="mr-1"
+            className="flex-auto"
           >
             View
           </Button>
-          <FollowButton id={profile.id!} />
+          <FollowButton className="flex-auto" id={profile.id!} />
         </div>
       </div>
     </div>
   );
 }
 
-function FollowButton({ id }: { id: string }) {
+function FollowButton({ id, className }: { id: string; className?: string }) {
   const [loadAfterFollow, setLoadAfterFollow] = useState<boolean>(false);
 
   const { data, isLoading, error } = useSWR(`/api/follows?id=${id}`, fetcher);
@@ -172,6 +172,7 @@ function FollowButton({ id }: { id: string }) {
         onClick={() => handleFollowClick(id)}
         disabled={loadAfterFollow}
         size={"sm"}
+        className={className}
       >
         {result
           ? loadAfterFollow

@@ -39,7 +39,7 @@ export default function Follows({ user_id }: { user_id?: string }) {
   return (
     <>
       <Tabs defaultValue="followers">
-        <TabsList>
+        <TabsList className="w-full md:w-fit">
           <TabsTrigger value="followers">Followers</TabsTrigger>
           <TabsTrigger value="following">Following</TabsTrigger>
         </TabsList>
@@ -103,7 +103,6 @@ function Following({ following }: { following: Following[] }) {
 }
 
 function DisplayProfile({ profile }: { profile: Profile }) {
-  console.log(profile.email);
   return (
     <>
       <div className="flex items-center gap-3 p-2 rounded-md">

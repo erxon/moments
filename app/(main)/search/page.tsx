@@ -11,24 +11,26 @@ export default function Search() {
 
   return (
     <>
-      <h3 className="text-xl mb-4">
-        Search for <span className="italic">{`"${query}"`}</span>
-      </h3>
-      <div>
-        <Tabs defaultValue="people" className="w-[400px]">
-          <TabsList>
-            <TabsTrigger value="people">People</TabsTrigger>
-            <TabsTrigger value="gallery">Galleries</TabsTrigger>
-            <TabsTrigger value="tags">Tags</TabsTrigger>
-            <TabsTrigger value="labels">Labels</TabsTrigger>
-          </TabsList>
-          <TabsContent value="people">
-            <People query={query} />
-          </TabsContent>
-          <TabsContent value="gallery"></TabsContent>
-          <TabsContent value="tags"></TabsContent>
-          <TabsContent value="labels"></TabsContent>
-        </Tabs>
+      <div className="flex flex-col gap-4 items-center md:block">
+        <h3 className="text-xl mb-4">
+          Search for <span className="italic">{`"${query}"`}</span>
+        </h3>
+        <div>
+          <Tabs defaultValue="people">
+            <TabsList>
+              <TabsTrigger value="people">People</TabsTrigger>
+              <TabsTrigger value="gallery">Galleries</TabsTrigger>
+              <TabsTrigger value="tags">Tags</TabsTrigger>
+              <TabsTrigger value="labels">Labels</TabsTrigger>
+            </TabsList>
+            <TabsContent value="people">
+              <People query={query} />
+            </TabsContent>
+            <TabsContent value="gallery"></TabsContent>
+            <TabsContent value="tags"></TabsContent>
+            <TabsContent value="labels"></TabsContent>
+          </Tabs>
+        </div>
       </div>
     </>
   );
