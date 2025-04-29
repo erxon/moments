@@ -50,27 +50,25 @@ export default function ImageComponent({
 
   return (
     <>
-      {isEditDialogFormOpen && (
-        <EditDialogForm
-          open={isEditDialogFormOpen}
-          setOpenEditDialogForm={setIsEditDialogFormOpen}
-          image={imageToManipulate!}
-          gallery_id={gallery_id}
-        />
-      )}
-      {isDeleteDialogOpen && (
-        <DeleteDialog
-          open={isDeleteDialogOpen}
-          setOpenDeleteDialog={setIsDeleteDialogOpen}
-          image={imageToManipulate!}
-        />
-      )}
-      {addTagDialogOpen && (
-        <AddTag
-          open={addTagDialogOpen}
-          setAddTagDialogOpen={setAddTagDialogOpen}
-          image={imageToManipulate!}
-        />
+      {imageToManipulate && (
+        <>
+          <EditDialogForm
+            open={isEditDialogFormOpen}
+            setOpenEditDialogForm={setIsEditDialogFormOpen}
+            image={imageToManipulate}
+            gallery_id={gallery_id}
+          />
+          <DeleteDialog
+            open={isDeleteDialogOpen}
+            setOpenDeleteDialog={setIsDeleteDialogOpen}
+            image={imageToManipulate}
+          />
+          <AddTag
+            open={addTagDialogOpen}
+            setAddTagDialogOpen={setAddTagDialogOpen}
+            image={imageToManipulate}
+          />
+        </>
       )}
       <div className="flex items-start justify-between p-2">
         <div className="mb-4">
