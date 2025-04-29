@@ -5,6 +5,7 @@ import DisplayImage from "../components/display-image";
 import Tags from "../components/tags";
 import { TagIcon } from "lucide-react";
 import { redirect } from "next/navigation";
+import Visibility from "@/components/visibility";
 
 export default async function ImageView({ image_id }: { image_id: string }) {
   const supabase = await createClient();
@@ -60,6 +61,7 @@ function Image({ image }: { image: ImageType }) {
     <>
       <div className="flex flex-col gap-4">
         <User id={image.user_id} />
+        <Visibility visibility={image.visibility} />
         <DisplayImage
           image={image.path}
           title={image.title}

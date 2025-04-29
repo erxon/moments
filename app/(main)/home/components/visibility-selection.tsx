@@ -7,14 +7,23 @@ import {
 } from "@/components/ui/select";
 import { GlobeIcon, Lock, UsersRound } from "lucide-react";
 
-export default function VisibilitySelection({ name }: { name: string }) {
+export default function VisibilitySelection({
+  name,
+  defaultValue,
+}: {
+  name: string;
+  defaultValue?: string;
+}) {
   return (
-    <Select name={name} defaultValue="public">
+    <Select name={name} defaultValue={defaultValue}>
       <SelectTrigger>
         <SelectValue placeholder="Select visibility" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="public">
+        <SelectItem
+          disabled={defaultValue === "private" || defaultValue === "followers"}
+          value="public"
+        >
           <div className="flex gap-1 items-center">
             <GlobeIcon className="w-4 h-4" />
             <p>Public</p>

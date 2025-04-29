@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { TagIcon } from "lucide-react";
+import Visibility from "@/components/visibility";
 
 export default function DisplayImage({
   image,

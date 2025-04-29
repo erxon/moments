@@ -24,6 +24,9 @@ import { set } from "react-hook-form";
 import EditDialogForm from "./edit-dialog-form";
 import DeleteDialog from "./delete-dialog";
 import AddTag from "./add-tag";
+import { captilizeFirstLetter } from "@/lib/string.util";
+import VisibilityIcon from "@/components/visibility-icon";
+import Visibility from "@/components/visibility";
 
 export default function ImageComponent({
   image,
@@ -76,6 +79,7 @@ export default function ImageComponent({
           <p className="text-sm text-neutral-500">
             {createdAt} {timeCreated}
           </p>
+          <Visibility visibility={image.visibility} />
         </div>
         <DropdownMenu open={openDropdown} onOpenChange={setOpenDropdown}>
           <DropdownMenuTrigger>

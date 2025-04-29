@@ -71,7 +71,7 @@ export default function GalleryView({
                 </div>
               </div>
 
-              <UploadImageButton gallery_id={gallery_id} />
+              <UploadImageButton gallery={gallery} gallery_id={gallery_id} />
             </div>
           </div>
         </div>

@@ -20,6 +20,7 @@ import axios from "axios";
 import triggerSuccessToast from "@/components/toast/trigger-success-toast";
 import triggerErrorToast from "@/components/toast/trigger-error-toast";
 import { mutate } from "swr";
+import Gallery from "@/lib/types/gallery.types";
 
 interface ImageData {
   title: string;
@@ -38,8 +39,10 @@ interface ValidationError {
 }
 
 export default function UploadImageButton({
+  gallery,
   gallery_id,
 }: {
+  gallery: Gallery;
   gallery_id: string;
 }) {
   return (
@@ -50,7 +53,7 @@ export default function UploadImageButton({
             <Image className="w-4 h-4 mr-1" /> Upload Image
           </Button>
         </DialogTrigger>
-        <DialogForm gallery_id={gallery_id} />
+        <DialogForm gallery={gallery} gallery_id={gallery_id} />
       </Dialog>
     </>
   );
@@ -79,7 +82,13 @@ function FormMessage({ message, show }: { message: string; show: boolean }) {
   if (show) return <p className="text-sm text-red-500">{message}</p>;
 }
 
-function DialogForm({ gallery_id }: { gallery_id: string }) {
+function DialogForm({
+  gallery,
+  gallery_id,
+}: {
+  gallery: Gallery;
+  gallery_id: string;
+}) {
   const formRef = useRef<HTMLFormElement | null>(null);
   const [validationError, setValidationError] = useState<ValidationError>({
     title: "",
@@ -262,7 +271,10 @@ function DialogForm({ gallery_id }: { gallery_id: string }) {
             >
               Visibility
             </FormLabel>
-            <VisibilitySelection name="visibility" />
+            <VisibilitySelection
+              defaultValue={gallery.visibility}
+              name="visibility"
+            />
             <FormMessage
               show={!!validationError.visibility}
               message={validationError.visibility}
@@ -272,7 +284,12 @@ function DialogForm({ gallery_id }: { gallery_id: string }) {
             <FormLabel htmlFor="image" error={!!validationError.image}>
               Image
             </FormLabel>
-            <Input onChange={handleChange} name="image" type="file" />
+            <Input
+              onChange={handleChange}
+              name="image"
+              type="file"
+              accept="image/png, image/jpeg, image/jpg"
+            />
             <FormMessage
               show={!!validationError.image}
               message={validationError.image}
