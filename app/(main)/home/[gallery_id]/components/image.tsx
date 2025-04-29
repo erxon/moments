@@ -21,23 +21,25 @@ import { Trash } from "lucide-react";
 import Tags from "./tags";
 import { useRouter } from "next/navigation";
 import { set } from "react-hook-form";
+import EditDialogForm from "./edit-dialog-form";
+import DeleteDialog from "./delete-dialog";
+import AddTag from "./add-tag";
 
 export default function ImageComponent({
-  setImageToManipulate,
-  setOpenEditDialog,
-  setOpenDeleteDialog,
-  setAddTagDialogOpen,
   image,
   gallery_id,
 }: {
-  setOpenEditDialog: React.Dispatch<React.SetStateAction<boolean>>;
-  setImageToManipulate: React.Dispatch<React.SetStateAction<ImageType>>;
-  setOpenDeleteDialog: React.Dispatch<React.SetStateAction<boolean>>;
-  setAddTagDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   image: ImageType;
   gallery_id: string;
 }) {
   const router = useRouter();
+  const [imageToManipulate, setImageToManipulate] = useState<ImageType | null>(
+    null
+  );
+  const [isEditDialogFormOpen, setIsEditDialogFormOpen] =
+    useState<boolean>(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
+  const [addTagDialogOpen, setAddTagDialogOpen] = useState<boolean>(false);
   const [openDropdown, setOpenDropdown] = useState<boolean>(false);
   const createdAt = localeDateStringFormatter(
     new Date(image.created_at!).toLocaleDateString()
@@ -48,6 +50,28 @@ export default function ImageComponent({
 
   return (
     <>
+      {isEditDialogFormOpen && (
+        <EditDialogForm
+          open={isEditDialogFormOpen}
+          setOpenEditDialogForm={setIsEditDialogFormOpen}
+          image={imageToManipulate!}
+          gallery_id={gallery_id}
+        />
+      )}
+      {isDeleteDialogOpen && (
+        <DeleteDialog
+          open={isDeleteDialogOpen}
+          setOpenDeleteDialog={setIsDeleteDialogOpen}
+          image={imageToManipulate!}
+        />
+      )}
+      {addTagDialogOpen && (
+        <AddTag
+          open={addTagDialogOpen}
+          setAddTagDialogOpen={setAddTagDialogOpen}
+          image={imageToManipulate!}
+        />
+      )}
       <div className="flex items-start justify-between p-2">
         <div className="mb-4">
           <p className="text-sm font-semibold">{image.title}</p>
@@ -71,7 +95,7 @@ export default function ImageComponent({
               onClick={() => {
                 setOpenDropdown(false);
                 setImageToManipulate(image);
-                setOpenEditDialog(true);
+                setIsEditDialogFormOpen(true);
               }}
             >
               <Pencil className="w-4 h-4" /> Edit
@@ -80,7 +104,7 @@ export default function ImageComponent({
               onClick={() => {
                 setOpenDropdown(false);
                 setImageToManipulate(image);
-                setOpenDeleteDialog(true);
+                setIsDeleteDialogOpen(true);
               }}
             >
               <Trash />

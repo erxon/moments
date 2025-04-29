@@ -12,23 +12,6 @@ import AddTag from "./add-tag";
 import { useState } from "react";
 
 function LoadImages({ gallery_id }: { gallery_id: string }) {
-  const [imageToManipulate, setImageToManipulate] = useState<ImageType>({
-    id: "",
-    user_id: "",
-    gallery_id: "",
-    title: "",
-    description: "",
-    label: "",
-    path: "",
-    visibility: "public",
-    created_at: "",
-    updated_at: "",
-  });
-  const [isEditDialogFormOpen, setIsEditDialogFormOpen] =
-    useState<boolean>(false);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
-  const [addTagDialogOpen, setAddTagDialogOpen] = useState<boolean>(false);
-
   const { data, error, isLoading } = useSWR(
     `/api/gallery/${gallery_id}/images`,
     fetcher
@@ -49,22 +32,6 @@ function LoadImages({ gallery_id }: { gallery_id: string }) {
 
   return (
     <>
-      <EditDialogForm
-        open={isEditDialogFormOpen}
-        setOpenEditDialogForm={setIsEditDialogFormOpen}
-        image={imageToManipulate}
-        gallery_id={gallery_id}
-      />
-      <DeleteDialog
-        open={isDeleteDialogOpen}
-        setOpenDeleteDialog={setIsDeleteDialogOpen}
-        image={imageToManipulate}
-      />
-      <AddTag
-        open={addTagDialogOpen}
-        setAddTagDialogOpen={setAddTagDialogOpen}
-        image={imageToManipulate}
-      />
       <div className="columns-1 md:columns-3 gap-4">
         {images.map((image) => {
           return (
@@ -72,14 +39,7 @@ function LoadImages({ gallery_id }: { gallery_id: string }) {
               key={image.id}
               className="mb-4 break-inside-avoid border rounded-lg"
             >
-              <ImageComponent
-                setOpenEditDialog={setIsEditDialogFormOpen}
-                setImageToManipulate={setImageToManipulate}
-                setOpenDeleteDialog={setIsDeleteDialogOpen}
-                setAddTagDialogOpen={setAddTagDialogOpen}
-                image={image}
-                gallery_id={gallery_id}
-              />
+              <ImageComponent image={image} gallery_id={gallery_id} />
             </div>
           );
         })}
