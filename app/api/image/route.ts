@@ -15,11 +15,16 @@ export async function POST(request: Request) {
   try {
     const user = await authenticate();
     const supabase = await createClient();
-    const url = await imageUploadToCloudinary(file, "image-gallery-app");
+    const gallery_id = formData.get("gallery_id")?.toString()!;
+    const url = await imageUploadToCloudinary(
+      file,
+      "image-gallery-app",
+      gallery_id
+    );
 
     const data = {
       user_id: user.id,
-      gallery_id: formData.get("gallery_id")?.toString(),
+      gallery_id: gallery_id,
       title: formData.get("title")?.toString(),
       description: formData.get("description")?.toString(),
       label: formData.get("label")?.toString(),

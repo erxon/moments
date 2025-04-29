@@ -1,5 +1,7 @@
 import { authenticate } from "@/lib/auth.util";
+import { imageBulkDelete } from "@/lib/cloudinary.util";
 import { createClient } from "@/utils/supabase/server";
+import { v2 as cloudinary } from "cloudinary";
 
 export async function GET(
   request: Request,
@@ -77,6 +79,28 @@ export async function DELETE(
 
     const supabase = await createClient();
 
+    //Delete images in the gallery
+    const { data: galleryImages, error: errorFetchingGalleryImages } =
+      await supabase
+        .from("image")
+        .select()
+        .eq("user_id", user.id)
+        .eq("gallery_id", gallery_id);
+
+    if (galleryImages && galleryImages.length > 0) {
+      await imageBulkDelete(`image-gallery-${gallery_id}`);
+
+      const { error } = await supabase
+        .from("image")
+        .delete()
+        .eq("gallery_id", gallery_id)
+        .eq("user_id", user.id);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+    }
+
     const { data, error } = await supabase
       .from("gallery")
       .delete()
@@ -89,7 +113,10 @@ export async function DELETE(
     }
 
     return new Response(
-      JSON.stringify({ data: data, message: "Successfully deleted" }),
+      JSON.stringify({
+        data: data,
+        message: "Gallery was successfully deleted",
+      }),
       { status: 200 }
     );
   } catch (error) {

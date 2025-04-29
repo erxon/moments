@@ -15,6 +15,7 @@ import useSWR from "swr";
 import EditGalleryDialog from "./gallery/edit-gallery-dialog";
 import visibilityDescription from "@/app/(main)/home/components/visibility-description";
 import { captilizeFirstLetter } from "@/lib/string.util";
+import DeleteGalleryDialog from "./gallery/delete-gallery-dialog";
 
 export default function AuthenticatedUserGalleries() {
   const { data, isLoading, error } = useSWR("/api/gallery", fetcher);
@@ -128,6 +129,11 @@ function Gallery({ gallery }: { gallery: Gallery }) {
             gallery={galleryToModify}
             open={openEditDialog}
             setOpen={setOpenEditDialog}
+          />
+          <DeleteGalleryDialog
+            gallery={galleryToModify}
+            open={openDeleteDialog}
+            setOpen={setOpenDeleteDialog}
           />
         </>
       )}

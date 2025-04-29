@@ -14,7 +14,11 @@ export async function imageToBase64(file: File) {
   return Buffer.from(buffer).toString("base64");
 }
 
-export async function imageUploadToCloudinary(file: File, folder: string) {
+export async function imageUploadToCloudinary(
+  file: File,
+  folder: string,
+  gallery_id: string
+) {
   try {
     const buffer = await imageToBuffer(file);
     const uploadImageURL: string | undefined = await new Promise(
@@ -23,7 +27,7 @@ export async function imageUploadToCloudinary(file: File, folder: string) {
           .upload_stream(
             {
               folder: "image-gallery-app",
-              tags: ["image-gallery"],
+              tags: [`image-gallery-${gallery_id}`],
             },
             function (error, result) {
               if (error) {
@@ -76,6 +80,14 @@ export async function imageUpload(file: File) {
   }
 }
 
+export async function getPublicIdFromUrl(url: string) {
+  const splitUrl = url.split("/");
+  const imageName = splitUrl[splitUrl.length - 1];
+  const publicId = imageName.split(".")[0];
+
+  return publicId;
+}
+
 export async function imageDelete(url: string, folder: string) {
   try {
     const splitUrl = url.split("/");
@@ -85,8 +97,16 @@ export async function imageDelete(url: string, folder: string) {
     console.log(publicId);
 
     const result = await cloudinary.uploader.destroy(`${folder}/${publicId}`);
-    console.log(result);
   } catch (error) {
     throw new Error("Something went wrong");
+  }
+}
+
+export async function imageBulkDelete(tag: string) {
+  try {
+    await cloudinary.api.delete_resources_by_tag(tag);
+    return true;
+  } catch (error) {
+    return false;
   }
 }
