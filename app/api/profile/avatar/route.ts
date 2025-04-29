@@ -1,4 +1,4 @@
-import { imageUpload, imageDelete } from "@/lib/cloudinary.util";
+import { imageUpload, imageDelete, avatarDelete } from "@/lib/cloudinary.util";
 import { v2 as cloudinary } from "cloudinary";
 import { createClient } from "@/utils/supabase/server";
 import { getProfileById } from "@/app/(main)/profile/components/profile-actions";
@@ -30,7 +30,7 @@ export async function PUT(request: Request) {
     try {
       if (profile.avatar) {
         //delete image
-        await imageDelete(profile.avatar);
+        await avatarDelete(profile.avatar);
       }
 
       const url = await imageUpload(file);

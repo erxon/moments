@@ -94,9 +94,19 @@ export async function imageDelete(url: string, folder: string) {
     const imageName = splitUrl[splitUrl.length - 1];
     const publicId = imageName.split(".")[0];
 
-    console.log(publicId);
+    await cloudinary.uploader.destroy(`${folder}/${publicId}`);
+  } catch (error) {
+    throw new Error("Something went wrong");
+  }
+}
 
-    const result = await cloudinary.uploader.destroy(`${folder}/${publicId}`);
+export async function avatarDelete(url: string) {
+  try {
+    const splitUrl = url.split("/");
+    const imageName = splitUrl[splitUrl.length - 1];
+    const publicId = imageName.split(".")[0];
+
+    await cloudinary.uploader.destroy(`${publicId}`);
   } catch (error) {
     throw new Error("Something went wrong");
   }
