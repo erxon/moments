@@ -40,7 +40,7 @@ export async function GET(request: Request) {
     const { data, error } = await supabase
       .from("gallery")
       .select()
-      .order("updated_at")
+      .order("updated_at", { nullsFirst: false, ascending: false })
       .eq("user_id", user.id);
 
     if (error) {

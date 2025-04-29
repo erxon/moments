@@ -14,6 +14,7 @@ import { localeDateStringFormatter } from "@/lib/date.util";
 import LoadErrorMessage from "@/components/load-error-message";
 import { UsersRoundIcon } from "lucide-react";
 import { PenLine } from "lucide-react";
+import AuthenticatedUserGalleries from "./authenticated-user-galleries";
 
 /*
 TODO:
@@ -32,9 +33,9 @@ export default function AuthenticatedUserProfile() {
 
   return (
     <div className="p-3">
-      <div className="lg:grid lg:grid-cols-4">
-        <div className="lg:col-span-2 flex flex-col gap-4">
-          <div className="mb-5 flex flex-col lg:flex-row lg:items-center ">
+      <div className="lg:grid lg:grid-cols-8 lg:gap-4">
+        <div className="lg:col-span-5 flex flex-col gap-4">
+          <div className="mb-5 flex flex-col lg:flex-row lg:items-center">
             <h1 className="text-2xl font-semibold grow text-center mb-4 lg:text-start lg:mb-0">
               Hi {profile.first_name}!
             </h1>
@@ -96,6 +97,10 @@ export default function AuthenticatedUserProfile() {
             <Socials user_id={profile.id} />
           </div>
           <AuthenticatedUserFollows />
+        </div>
+        <div className="lg:col-span-3">
+          <h1 className="text-xl font-medium">Galleries</h1>
+          <AuthenticatedUserGalleries />
         </div>
       </div>
     </div>
