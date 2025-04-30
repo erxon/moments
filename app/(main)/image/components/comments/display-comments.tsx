@@ -46,8 +46,6 @@ export default function DisplayComments({
   image_id: string;
   auth_user: Profile;
 }) {
-  const [openEditDialog, setOpenEditDialogFormTo] = useState<boolean>(false);
-  const [commentToEdit, setCommentToEdit] = useState<Comment | null>(null);
   const [commentToDelete, setCommentToDelete] = useState<Comment | null>(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
 
@@ -84,16 +82,6 @@ export default function DisplayComments({
                   variant="secondary"
                   size={"icon"}
                   onClick={() => {
-                    setCommentToEdit(comment);
-                    setOpenEditDialogFormTo(true);
-                  }}
-                >
-                  <Pencil className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant="secondary"
-                  size={"icon"}
-                  onClick={() => {
                     setCommentToDelete(comment);
                     setOpenDeleteDialog(true);
                   }}
@@ -105,16 +93,13 @@ export default function DisplayComments({
           </Comment>
         ))}
       </div>
-      {/* <EditCommentDialog
-        comment={commentToEdit!}
-        open={openEditDialog}
-        setOpen={setOpenEditDialogFormTo}
-      /> */}
-      <DeleteCommentDialog
-        comment={commentToDelete!}
-        open={openDeleteDialog}
-        setOpen={setOpenDeleteDialog}
-      />
+      {commentToDelete && (
+        <DeleteCommentDialog
+          comment={commentToDelete}
+          open={openDeleteDialog}
+          setOpen={setOpenDeleteDialog}
+        />
+      )}
     </>
   );
 }
@@ -234,7 +219,10 @@ function DeleteCommentDialog({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   comment: Comment;
 }) {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const handleDelete = async () => {
+    setIsLoading(true);
     try {
       const result = await axios.delete(`/api/comments/${comment.id}`);
 
@@ -250,6 +238,7 @@ function DeleteCommentDialog({
         triggerErrorToast(error.response?.data);
       }
     }
+    setIsLoading(false);
   };
 
   return (
@@ -261,14 +250,19 @@ function DeleteCommentDialog({
             Are you sure you want to delete this comment?
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter>
+        <DialogFooter className="flex flex-col gap-1 lg:gap-0">
           <DialogClose asChild>
             <Button variant={"secondary"} size={"sm"}>
               Close
             </Button>
           </DialogClose>
-          <Button onClick={handleDelete} size={"sm"}>
-            Delete
+          <Button
+            disabled={isLoading}
+            onClick={handleDelete}
+            size={"sm"}
+            variant={"destructive"}
+          >
+            {isLoading ? "Deleting..." : "Delete"}
           </Button>
         </DialogFooter>
       </DialogContent>
