@@ -13,8 +13,6 @@ export default function Tags({ image_id }: { image_id: string }) {
   if (error) return <div>Failed to load tags</div>;
   if (isLoading) return <Skeleton className="w-full h-6" />;
 
-  console.log(data);
-
   if (data.length === 0)
     return <p className="text-sm text-neutral-500">No tags</p>;
 

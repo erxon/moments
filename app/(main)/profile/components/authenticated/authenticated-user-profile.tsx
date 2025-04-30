@@ -9,12 +9,17 @@ import AuthenticatedUserFollows from "./authenticated-user-follows";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { ImageIcon, PencilIcon } from "lucide-react";
+import { ArrowDown, ChevronsUpDown, ImageIcon, PencilIcon } from "lucide-react";
 import { localeDateStringFormatter } from "@/lib/date.util";
 import LoadErrorMessage from "@/components/load-error-message";
 import { UsersRoundIcon } from "lucide-react";
 import { PenLine } from "lucide-react";
 import AuthenticatedUserGalleries from "./authenticated-user-galleries";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 /*
 TODO:
@@ -98,12 +103,35 @@ export default function AuthenticatedUserProfile() {
           </div>
           <AuthenticatedUserFollows />
         </div>
-        <div className="lg:col-span-3">
-          <h1 className="text-xl font-medium">Galleries</h1>
-          <AuthenticatedUserGalleries />
+        <div className="lg:col-span-3 mt-8">
+          <h1 className="text-xl font-medium hidden lg:block">Galleries</h1>
+          <div className="hidden lg:block">
+            <AuthenticatedUserGalleries />
+          </div>
+          <div className="lg:hidden">
+            <CollapsibleGalleries />
+          </div>
         </div>
       </div>
     </div>
+  );
+}
+
+function CollapsibleGalleries() {
+  return (
+    <Collapsible>
+      <div className="flex items-center justify-between">
+        <p className="font-medium text-xl">Galleries</p>
+        <CollapsibleTrigger asChild>
+          <Button size={"icon"} variant={"ghost"}>
+            <ChevronsUpDown className="w-4 h-4" />
+          </Button>
+        </CollapsibleTrigger>
+      </div>
+      <CollapsibleContent>
+        <AuthenticatedUserGalleries />
+      </CollapsibleContent>
+    </Collapsible>
   );
 }
 

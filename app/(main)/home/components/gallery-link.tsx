@@ -20,7 +20,6 @@ export default function GalleryLink({
 }) {
   const { gallery_id } = useParams<{ gallery_id: string }>();
 
-  console.log(gallery_id);
   return (
     <Link
       onClick={onClick}

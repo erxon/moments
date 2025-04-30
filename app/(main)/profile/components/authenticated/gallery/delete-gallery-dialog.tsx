@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import Gallery from "@/lib/types/gallery.types";
 import axios, { AxiosError } from "axios";
+import { useState } from "react";
 import { mutate } from "swr";
 
 export default function DeleteGalleryDialog({
@@ -25,7 +26,9 @@ export default function DeleteGalleryDialog({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   gallery: Gallery;
 }) {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const handleConfirm = async () => {
+    setIsLoading(true);
     try {
       const result = await axios.delete(`/api/gallery/${gallery.id}`);
 
@@ -41,6 +44,7 @@ export default function DeleteGalleryDialog({
         triggerErrorToast(error.response!.data);
       }
     }
+    setIsLoading(false);
   };
 
   return (
@@ -61,8 +65,13 @@ export default function DeleteGalleryDialog({
               Cancel
             </Button>
           </DialogClose>
-          <Button variant={"destructive"} size={"sm"} onClick={handleConfirm}>
-            Confirm
+          <Button
+            disabled={isLoading}
+            variant={"destructive"}
+            size={"sm"}
+            onClick={handleConfirm}
+          >
+            {isLoading ? "Deleting..." : "Confirm"}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -34,8 +34,6 @@ export default function MobileGallery({
   const [open, setOpen] = useState<boolean>(false);
   const [value, setValue] = useState<string>("");
 
-  console.log(value === gallery_id, value);
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
