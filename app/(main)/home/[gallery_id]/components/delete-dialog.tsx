@@ -54,7 +54,7 @@ export default function DeleteDialog({
             undone.
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter className="mr-auto">
+        <DialogFooter className="flex flex-col gap-1 lg:gap-0">
           <DialogClose asChild>
             <Button variant="secondary">Close</Button>
           </DialogClose>

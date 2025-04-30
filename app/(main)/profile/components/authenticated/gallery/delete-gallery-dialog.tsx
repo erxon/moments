@@ -59,7 +59,7 @@ export default function DeleteGalleryDialog({
             undone`}
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter>
+        <DialogFooter className="flex flex-col gap-1 lg:gap-0">
           <DialogClose asChild>
             <Button variant={"secondary"} size={"sm"}>
               Cancel
